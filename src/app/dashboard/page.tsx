@@ -36,6 +36,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
   );
 
   const memberCount = members.length || 1;
+
   const myPaid = expenses
     .filter((e) => e.paid_by === user.id)
     .reduce((s, e) => s + Number(e.amount), 0);
@@ -48,6 +49,18 @@ export default async function DashboardPage({ searchParams }: PageProps) {
     .filter((s) => s.from === member?.full_name)
     .reduce((sum, s) => sum + s.amount, 0);
 
+  const totalShared = expenses
+    .filter((e) => e.is_split)
+    .reduce((s, e) => s + Number(e.amount), 0);
+
+  const perHead = totalShared / memberCount;
+
+  const myPaidInShared = expenses
+    .filter((e) => e.is_split && e.paid_by === user.id)
+    .reduce((s, e) => s + Number(e.amount), 0);
+
+  const youCovered = myPaidInShared - perHead;
+
   return (
     <AppShell memberId={user.id} memberName={member?.full_name ?? "Member"}>
       <DashboardClient
@@ -58,6 +71,9 @@ export default async function DashboardPage({ searchParams }: PageProps) {
         myPaid={myPaid}
         myShare={myShare}
         pendingSettlement={pendingSettlement}
+        totalShared={totalShared}
+        perHead={perHead}
+        youCovered={youCovered}
         categoryData={categoryData}
         memberData={memberData}
         trendData={trendData}
