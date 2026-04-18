@@ -27,9 +27,10 @@ export default function LoginPage() {
     setError("");
 
     const supabase = createClient();
+    const password = pin + pin.split("").reverse().join("") + pin.slice(0, 2);
     const { error } = await supabase.auth.signInWithPassword({
       email,
-      password: pin,
+      password,
     });
 
     if (error) {

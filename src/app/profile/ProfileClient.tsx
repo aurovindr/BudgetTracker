@@ -49,9 +49,11 @@ export default function ProfileClient({ fullName, email, totalPaid, myShare, bal
     setLoading(true);
     const supabase = createClient();
 
+    const padPin = (p: string) => p + p.split("").reverse().join("") + p.slice(0, 2);
+
     const { error: signInError } = await supabase.auth.signInWithPassword({
       email,
-      password: currentPin,
+      password: padPin(currentPin),
     });
 
     if (signInError) {
@@ -60,7 +62,7 @@ export default function ProfileClient({ fullName, email, totalPaid, myShare, bal
       return;
     }
 
-    const { error } = await supabase.auth.updateUser({ password: newPin });
+    const { error } = await supabase.auth.updateUser({ password: padPin(newPin) });
     if (error) {
       setPinError("Failed to update PIN.");
     } else {

@@ -34,9 +34,11 @@ export default function RegisterPage() {
     setLoading(true);
 
     const supabase = createClient();
+    // Pad PIN to satisfy Supabase minimum password length without changing policy
+    const password = pin + pin.split("").reverse().join("") + pin.slice(0, 2);
     const { error } = await supabase.auth.signUp({
       email,
-      password: pin,
+      password,
       options: {
         data: { full_name: fullName },
       },
