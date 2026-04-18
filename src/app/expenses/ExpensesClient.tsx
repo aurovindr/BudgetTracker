@@ -98,40 +98,50 @@ export default function ExpensesClient({ expenses, year, month }: Props) {
                 {formatDate(date)}
               </p>
               <div className="space-y-2">
-                {grouped[date].map((e) => (
-                  <div
-                    key={e.id}
-                    className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center justify-between gap-3"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className="w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0"
-                        style={{ backgroundColor: (CATEGORY_COLORS[e.category as Category] ?? "#94a3b8") + "22" }}
-                      >
-                        {CATEGORY_EMOJI[e.category] ?? "📦"}
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold text-gray-800 leading-tight">{e.description}</p>
-                        <p className="text-xs text-gray-400 mt-0.5">
-                          {e.category} · {e.paid_by_member?.full_name ?? "—"}
-                        </p>
-                        <div className="flex gap-1.5 mt-1">
-                          {e.is_split && (
-                            <span className="text-[10px] bg-violet-100 text-violet-600 font-medium rounded-full px-2 py-0.5">Split</span>
-                          )}
-                          {e.is_recurring && (
-                            <span className="text-[10px] bg-amber-100 text-amber-600 font-medium rounded-full px-2 py-0.5 flex items-center gap-1">
-                              <RefreshCw size={8} /> Recurring
-                            </span>
-                          )}
+                {grouped[date].map((e) => {
+                  const color = CATEGORY_COLORS[e.category as Category] ?? "#94a3b8";
+                  return (
+                    <div
+                      key={e.id}
+                      className="bg-white rounded-2xl shadow-sm overflow-hidden flex"
+                      style={{ borderLeft: `5px solid ${color}` }}
+                    >
+                      <div className="flex items-center justify-between gap-3 flex-1 px-4 py-3">
+                        <div className="flex items-center gap-3">
+                          <div
+                            className="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
+                            style={{ backgroundColor: color + "22" }}
+                          >
+                            {CATEGORY_EMOJI[e.category] ?? "📦"}
+                          </div>
+                          <div>
+                            <p className="text-sm font-semibold text-gray-800 leading-tight">{e.description}</p>
+                            <div className="flex items-center gap-1.5 mt-1 flex-wrap">
+                              <span
+                                className="text-[10px] font-bold rounded-full px-2 py-0.5"
+                                style={{ backgroundColor: color + "22", color }}
+                              >
+                                {e.category}
+                              </span>
+                              <span className="text-[10px] text-gray-400">{e.paid_by_member?.full_name ?? "—"}</span>
+                              {e.is_split && (
+                                <span className="text-[10px] bg-violet-100 text-violet-600 font-medium rounded-full px-2 py-0.5">Split</span>
+                              )}
+                              {e.is_recurring && (
+                                <span className="text-[10px] bg-amber-100 text-amber-600 font-medium rounded-full px-2 py-0.5 flex items-center gap-1">
+                                  <RefreshCw size={8} /> Recurring
+                                </span>
+                              )}
+                            </div>
+                          </div>
                         </div>
+                        <p className="text-base font-bold flex-shrink-0" style={{ color }}>
+                          ₹{Number(e.amount).toFixed(2)}
+                        </p>
                       </div>
                     </div>
-                    <p className="text-base font-bold text-gray-800 flex-shrink-0">
-                      ₹{Number(e.amount).toFixed(2)}
-                    </p>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           ))
