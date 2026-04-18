@@ -40,7 +40,7 @@ export default function DashboardClient({
 
   function navigate(dir: -1 | 1) {
     const d = new Date(year, month - 1 + dir);
-    router.push(`/dashboard?year=₹{d.getFullYear()}&month=₹{d.getMonth() + 1}`);
+    router.push(`/dashboard?year=${d.getFullYear()}&month=${d.getMonth() + 1}`);
   }
 
   const firstName = memberName.split(" ")[0];
