@@ -53,7 +53,7 @@ export default function DashboardClient({
   return (
     <div className="space-y-4">
       {/* Header */}
-      <div className="bg-gradient-to-br from-indigo-600 via-violet-600 to-indigo-700 px-5 pt-8 pb-6 rounded-b-3xl shadow-lg">
+      <div className="bg-gradient-to-br from-violet-600 via-indigo-600 to-blue-500 px-5 pt-8 pb-6 rounded-b-3xl shadow-lg">
         <p className="text-white/70 text-base mb-0.5">Good day,</p>
         <h1 className="text-3xl font-bold text-white mb-4">{firstName} 👋</h1>
         <div className="flex items-center justify-between bg-white/15 backdrop-blur rounded-2xl px-4 py-2.5">
@@ -73,15 +73,15 @@ export default function DashboardClient({
         <div>
           <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 px-1">Your Summary</p>
           <div className="grid grid-cols-2 gap-3">
-            <div className="bg-gradient-to-br from-indigo-500 to-violet-600 rounded-2xl p-4 text-white shadow-md shadow-indigo-100">
+            <div className="bg-gradient-to-br from-violet-500 to-purple-600 rounded-2xl p-4 text-white shadow-md shadow-violet-200">
               <div className="flex items-center gap-1.5 mb-2 opacity-80"><Wallet size={15} /><p className="text-sm font-semibold">Total Spent</p></div>
               <p className="text-2xl font-bold">₹{fmt(totalSpent)}</p>
             </div>
-            <div className="bg-gradient-to-br from-violet-500 to-purple-600 rounded-2xl p-4 text-white shadow-md shadow-violet-100">
+            <div className="bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl p-4 text-white shadow-md shadow-blue-200">
               <div className="flex items-center gap-1.5 mb-2 opacity-80"><TrendingUp size={15} /><p className="text-sm font-semibold">You Paid</p></div>
               <p className="text-2xl font-bold">₹{fmt(myPaid)}</p>
             </div>
-            <div className="bg-gradient-to-br from-slate-600 to-indigo-700 rounded-2xl p-4 text-white shadow-md shadow-slate-200">
+            <div className="bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl p-4 text-white shadow-md shadow-emerald-200">
               <div className="flex items-center gap-1.5 mb-2 opacity-80"><UserCheck size={15} /><p className="text-sm font-semibold">Your Share</p></div>
               <p className="text-2xl font-bold">₹{fmt(myShare)}</p>
             </div>
@@ -144,7 +144,7 @@ export default function DashboardClient({
         {/* Charts */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="px-4 pt-4 pb-1 flex items-center gap-2">
-            <div className="w-1 h-5 bg-gradient-to-b from-indigo-500 to-violet-500 rounded-full" />
+            <div className="w-1 h-5 bg-gradient-to-b from-violet-500 to-indigo-500 rounded-full" />
             <h2 className="text-base font-bold text-gray-700">Spending by Category</h2>
           </div>
           <CategoryChart data={categoryData} />
@@ -152,7 +152,7 @@ export default function DashboardClient({
 
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="px-4 pt-4 pb-1 flex items-center gap-2">
-            <div className="w-1 h-5 bg-gradient-to-b from-violet-500 to-purple-500 rounded-full" />
+            <div className="w-1 h-5 bg-gradient-to-b from-blue-500 to-cyan-500 rounded-full" />
             <h2 className="text-base font-bold text-gray-700">Payment by Member</h2>
           </div>
           <div className="px-2 pb-2">
@@ -162,7 +162,7 @@ export default function DashboardClient({
 
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="px-4 pt-4 pb-1 flex items-center gap-2">
-            <div className="w-1 h-5 bg-gradient-to-b from-indigo-400 to-violet-600 rounded-full" />
+            <div className="w-1 h-5 bg-gradient-to-b from-emerald-500 to-teal-500 rounded-full" />
             <h2 className="text-base font-bold text-gray-700">6-Month Trend</h2>
           </div>
           <div className="px-2 pb-2">
@@ -184,13 +184,13 @@ export default function DashboardClient({
           ) : (
             <ul className="px-4 pb-4 space-y-2">
               {settlements.map((s, i) => (
-                <li key={i} className="flex items-center justify-between bg-indigo-50 rounded-xl px-3 py-3">
+                <li key={i} className="flex items-center justify-between bg-rose-50 rounded-xl px-3 py-3">
                   <div className="flex items-center gap-2 text-base">
                     <span className="font-bold text-rose-600">{s.from}</span>
                     <span className="text-gray-400">→</span>
                     <span className="font-bold text-emerald-600">{s.to}</span>
                   </div>
-                  <span className="font-bold text-indigo-700 text-base">₹{fmt(s.amount)}</span>
+                  <span className="font-bold text-gray-800 text-base">₹{fmt(s.amount)}</span>
                 </li>
               ))}
             </ul>

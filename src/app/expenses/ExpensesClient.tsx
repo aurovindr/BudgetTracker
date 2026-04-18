@@ -101,7 +101,7 @@ export default function ExpensesClient({ expenses, year, month, currentMemberId 
   return (
     <div className="space-y-4">
       {/* Gradient Header */}
-      <div className="bg-gradient-to-br from-indigo-600 via-violet-600 to-indigo-700 px-5 pt-8 pb-6 rounded-b-3xl shadow-lg">
+      <div className="bg-gradient-to-br from-blue-500 via-cyan-500 to-teal-500 px-5 pt-8 pb-6 rounded-b-3xl shadow-lg">
         <h1 className="text-2xl font-bold text-white mb-0.5">Expenses</h1>
         <p className="text-white/80 text-base font-medium mb-4">
           ₹{totalFiltered.toLocaleString("en-IN", { minimumFractionDigits: 2 })} total
