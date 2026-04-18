@@ -5,12 +5,6 @@ import { usePathname } from "next/navigation";
 import { Home, PlusCircle, List, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const tabs = [
-  { label: "Home", href: "/dashboard", icon: Home },
-  { label: "Expenses", href: "/expenses", icon: List },
-  { label: "Profile", href: "/profile", icon: User },
-];
-
 interface BottomNavProps {
   onAddClick: () => void;
 }
@@ -18,47 +12,35 @@ interface BottomNavProps {
 export default function BottomNav({ onAddClick }: BottomNavProps) {
   const pathname = usePathname();
 
+  const linkClass = (href: string) =>
+    cn(
+      "flex flex-col items-center gap-0.5 text-xs px-4 py-2 transition-colors",
+      pathname === href ? "text-violet-600" : "text-gray-400"
+    );
+
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 flex items-center justify-around h-16 max-w-lg mx-auto">
-      <Link
-        href="/dashboard"
-        className={cn(
-          "flex flex-col items-center gap-0.5 text-xs px-4 py-2",
-          pathname === "/dashboard" ? "text-blue-600" : "text-gray-500"
-        )}
-      >
-        <Home size={22} />
-        <span>Home</span>
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/90 backdrop-blur border-t border-gray-100 flex items-center justify-around h-16 max-w-lg mx-auto shadow-lg">
+      <Link href="/dashboard" className={linkClass("/dashboard")}>
+        <Home size={22} strokeWidth={pathname === "/dashboard" ? 2.5 : 1.8} />
+        <span className={pathname === "/dashboard" ? "font-semibold" : ""}>Home</span>
       </Link>
 
-      <Link
-        href="/expenses"
-        className={cn(
-          "flex flex-col items-center gap-0.5 text-xs px-4 py-2",
-          pathname === "/expenses" ? "text-blue-600" : "text-gray-500"
-        )}
-      >
-        <List size={22} />
-        <span>Expenses</span>
+      <Link href="/expenses" className={linkClass("/expenses")}>
+        <List size={22} strokeWidth={pathname === "/expenses" ? 2.5 : 1.8} />
+        <span className={pathname === "/expenses" ? "font-semibold" : ""}>Expenses</span>
       </Link>
 
+      {/* Add button — elevated pill */}
       <button
         onClick={onAddClick}
-        className="flex flex-col items-center gap-0.5 text-xs px-4 py-2 text-blue-600"
+        className="flex flex-col items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-600 text-white shadow-lg shadow-violet-300 -mt-5"
       >
-        <PlusCircle size={26} />
-        <span>Add</span>
+        <PlusCircle size={26} strokeWidth={2} />
       </button>
 
-      <Link
-        href="/profile"
-        className={cn(
-          "flex flex-col items-center gap-0.5 text-xs px-4 py-2",
-          pathname === "/profile" ? "text-blue-600" : "text-gray-500"
-        )}
-      >
-        <User size={22} />
-        <span>Profile</span>
+      <Link href="/profile" className={linkClass("/profile")}>
+        <User size={22} strokeWidth={pathname === "/profile" ? 2.5 : 1.8} />
+        <span className={pathname === "/profile" ? "font-semibold" : ""}>Profile</span>
       </Link>
     </nav>
   );

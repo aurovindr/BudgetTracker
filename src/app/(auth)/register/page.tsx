@@ -4,10 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -21,110 +19,87 @@ export default function RegisterPage() {
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
     setError("");
-
-    if (pin.length !== 4) {
-      setError("PIN must be exactly 4 digits.");
-      return;
-    }
-    if (pin !== confirmPin) {
-      setError("PINs do not match.");
-      return;
-    }
-
+    if (pin.length !== 4) { setError("PIN must be exactly 4 digits."); return; }
+    if (pin !== confirmPin) { setError("PINs do not match."); return; }
     setLoading(true);
-
     const supabase = createClient();
-    // Pad PIN to satisfy Supabase minimum password length without changing policy
     const password = pin + pin.split("").reverse().join("") + pin.slice(0, 2);
     const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { full_name: fullName },
-      },
+      email, password,
+      options: { data: { full_name: fullName } },
     });
-
-    if (error) {
-      setError(error.message);
-      setLoading(false);
-      return;
-    }
-
+    if (error) { setError(error.message); setLoading(false); return; }
     router.push("/dashboard");
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <Card className="w-full max-w-sm">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl">BudgetTracker</CardTitle>
-          <CardDescription>Create your account</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleRegister} className="space-y-4">
-            <div className="space-y-1">
-              <Label htmlFor="fullName">Full Name</Label>
-              <Input
-                id="fullName"
-                type="text"
-                placeholder="Jane Smith"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                required
-                autoComplete="name"
-              />
-            </div>
-            <div className="space-y-1">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                autoComplete="email"
-              />
-            </div>
-            <div className="space-y-1">
-              <Label htmlFor="pin">4-Digit PIN</Label>
-              <Input
-                id="pin"
-                type="password"
-                inputMode="numeric"
-                maxLength={4}
-                placeholder="••••"
-                value={pin}
-                onChange={(e) => setPin(e.target.value.replace(/\D/g, ""))}
-                required
-              />
-            </div>
-            <div className="space-y-1">
-              <Label htmlFor="confirmPin">Confirm PIN</Label>
-              <Input
-                id="confirmPin"
-                type="password"
-                inputMode="numeric"
-                maxLength={4}
-                placeholder="••••"
-                value={confirmPin}
-                onChange={(e) => setConfirmPin(e.target.value.replace(/\D/g, ""))}
-                required
-              />
-            </div>
-            {error && <p className="text-sm text-red-500">{error}</p>}
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Creating account…" : "Create Account"}
-            </Button>
-          </form>
-        </CardContent>
-        <CardFooter className="justify-center text-sm text-gray-500">
+    <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-600 px-4 py-8">
+      {/* Logo */}
+      <div className="mb-6 text-center">
+        <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-3 backdrop-blur">
+          <span className="text-3xl">💰</span>
+        </div>
+        <h1 className="text-3xl font-bold text-white tracking-tight">BudgetTracker</h1>
+        <p className="text-white/70 text-sm mt-1">Join your household</p>
+      </div>
+
+      {/* Card */}
+      <div className="w-full max-w-sm bg-white rounded-3xl shadow-2xl p-6">
+        <h2 className="text-xl font-bold text-gray-800 mb-5">Create account</h2>
+        <form onSubmit={handleRegister} className="space-y-4">
+          <div className="space-y-1.5">
+            <Label htmlFor="fullName" className="text-gray-600 font-medium text-sm">Full Name</Label>
+            <Input
+              id="fullName" type="text" placeholder="Jane Smith"
+              value={fullName} onChange={(e) => setFullName(e.target.value)}
+              required autoComplete="name"
+              className="rounded-xl border-gray-200 focus:border-emerald-400 h-11"
+            />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="email" className="text-gray-600 font-medium text-sm">Email</Label>
+            <Input
+              id="email" type="email" placeholder="you@example.com"
+              value={email} onChange={(e) => setEmail(e.target.value)}
+              required autoComplete="email"
+              className="rounded-xl border-gray-200 focus:border-emerald-400 h-11"
+            />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="pin" className="text-gray-600 font-medium text-sm">4-Digit PIN</Label>
+            <Input
+              id="pin" type="password" inputMode="numeric" maxLength={4} placeholder="••••"
+              value={pin} onChange={(e) => setPin(e.target.value.replace(/\D/g, ""))}
+              required
+              className="rounded-xl border-gray-200 focus:border-emerald-400 h-11 text-center text-xl tracking-[0.5em]"
+            />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="confirmPin" className="text-gray-600 font-medium text-sm">Confirm PIN</Label>
+            <Input
+              id="confirmPin" type="password" inputMode="numeric" maxLength={4} placeholder="••••"
+              value={confirmPin} onChange={(e) => setConfirmPin(e.target.value.replace(/\D/g, ""))}
+              required
+              className="rounded-xl border-gray-200 focus:border-emerald-400 h-11 text-center text-xl tracking-[0.5em]"
+            />
+          </div>
+          {error && (
+            <div className="bg-red-50 text-red-600 text-sm rounded-xl px-3 py-2">{error}</div>
+          )}
+          <button
+            type="submit" disabled={loading}
+            className="w-full h-12 rounded-xl font-semibold text-white bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 transition-all shadow-lg shadow-emerald-200 disabled:opacity-60 mt-2"
+          >
+            {loading ? "Creating account…" : "Create Account"}
+          </button>
+        </form>
+        <p className="text-center text-sm text-gray-500 mt-5">
           Already have an account?{" "}
-          <Link href="/login" className="ml-1 text-blue-600 hover:underline">
+          <Link href="/login" className="text-emerald-600 font-semibold hover:underline">
             Sign in
           </Link>
-        </CardFooter>
-      </Card>
+        </p>
+      </div>
     </main>
   );
 }
