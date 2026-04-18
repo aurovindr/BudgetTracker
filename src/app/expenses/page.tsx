@@ -28,7 +28,7 @@ export default async function ExpensesPage({ searchParams }: PageProps) {
 
   const { data: expenses } = await supabase
     .from("expenses")
-    .select("*, paid_by_member:members!expenses_paid_by_fkey(full_name)")
+    .select("*, paid_by, paid_by_member:members!expenses_paid_by_fkey(full_name)")
     .gte("date", from)
     .lte("date", to)
     .order("date", { ascending: false });
@@ -39,6 +39,7 @@ export default async function ExpensesPage({ searchParams }: PageProps) {
         expenses={expenses ?? []}
         year={year}
         month={month}
+        currentMemberId={user.id}
       />
     </AppShell>
   );
