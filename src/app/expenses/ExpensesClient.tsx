@@ -69,7 +69,7 @@ export default function ExpensesClient({ expenses, year, month }: Props) {
       {/* Gradient Header */}
       <div className="bg-gradient-to-br from-blue-500 via-cyan-500 to-teal-500 px-5 pt-8 pb-6 rounded-b-3xl shadow-lg">
         <h1 className="text-2xl font-bold text-white mb-1">Expenses</h1>
-        <p className="text-white/70 text-sm">₹{totalMonth.toFixed(2)} total this period</p>
+        <p className="text-white/80 text-base font-medium">₹{totalMonth.toLocaleString("en-IN", { minimumFractionDigits: 2 })} total this period</p>
 
         <div className="flex items-center justify-between bg-white/15 backdrop-blur rounded-2xl px-4 py-2.5 mt-4">
           <button onClick={() => navigate(-1)} disabled={isMinMonth} className="text-white disabled:opacity-30">
@@ -115,7 +115,7 @@ export default function ExpensesClient({ expenses, year, month }: Props) {
                             {CATEGORY_EMOJI[e.category] ?? "📦"}
                           </div>
                           <div>
-                            <p className="text-sm font-semibold text-gray-800 leading-tight">{e.description}</p>
+                            <p className="text-base font-bold text-gray-800 leading-tight">{e.description}</p>
                             <div className="flex items-center gap-1.5 mt-1 flex-wrap">
                               <span
                                 className="text-[10px] font-bold rounded-full px-2 py-0.5"
@@ -135,8 +135,8 @@ export default function ExpensesClient({ expenses, year, month }: Props) {
                             </div>
                           </div>
                         </div>
-                        <p className="text-base font-bold flex-shrink-0" style={{ color }}>
-                          ₹{Number(e.amount).toFixed(2)}
+                        <p className="text-lg font-bold flex-shrink-0" style={{ color }}>
+                          ₹{Number(e.amount).toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                         </p>
                       </div>
                     </div>

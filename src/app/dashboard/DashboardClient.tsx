@@ -15,7 +15,7 @@ interface Props {
   myShare: number;
   pendingSettlement: number;
   categoryData: { name: string; value: number }[];
-  memberData: { name: string; paid: number }[];
+  memberData: { name: string; self: number; shared: number }[];
   trendData: { month: string; total: number }[];
   settlements: { from: string; to: string; amount: number }[];
 }
@@ -49,15 +49,15 @@ export default function DashboardClient({
     <div className="space-y-4">
       {/* Gradient Header */}
       <div className="bg-gradient-to-br from-violet-600 via-indigo-600 to-blue-500 px-5 pt-8 pb-6 rounded-b-3xl shadow-lg">
-        <p className="text-white/70 text-sm mb-0.5">Good day,</p>
-        <h1 className="text-2xl font-bold text-white mb-4">{firstName} 👋</h1>
+        <p className="text-white/70 text-base mb-0.5">Good day,</p>
+        <h1 className="text-3xl font-bold text-white mb-4">{firstName} 👋</h1>
 
         {/* Month Nav inside header */}
         <div className="flex items-center justify-between bg-white/15 backdrop-blur rounded-2xl px-4 py-2.5">
           <button onClick={() => navigate(-1)} disabled={isMinMonth} className="text-white disabled:opacity-30">
             <ChevronLeft size={20} />
           </button>
-          <span className="font-semibold text-white text-sm">
+          <span className="font-bold text-white text-base">
             {MONTH_NAMES[month - 1]} {year}
           </span>
           <button onClick={() => navigate(1)} disabled={isCurrentMonth} className="text-white disabled:opacity-30">
@@ -71,38 +71,38 @@ export default function DashboardClient({
         <div className="grid grid-cols-2 gap-3">
           <div className="bg-gradient-to-br from-violet-500 to-purple-600 rounded-2xl p-4 text-white shadow-md shadow-violet-200">
             <div className="flex items-center gap-1.5 mb-2 opacity-80">
-              <Wallet size={14} />
-              <p className="text-xs font-medium">Total Spent</p>
+              <Wallet size={15} />
+              <p className="text-sm font-semibold">Total Spent</p>
             </div>
-            <p className="text-2xl font-bold">₹{totalSpent.toFixed(2)}</p>
+            <p className="text-3xl font-bold">₹{totalSpent.toLocaleString("en-IN", { minimumFractionDigits: 2 })}</p>
           </div>
 
           <div className="bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl p-4 text-white shadow-md shadow-blue-200">
             <div className="flex items-center gap-1.5 mb-2 opacity-80">
-              <TrendingUp size={14} />
-              <p className="text-xs font-medium">You Paid</p>
+              <TrendingUp size={15} />
+              <p className="text-sm font-semibold">You Paid</p>
             </div>
-            <p className="text-2xl font-bold">₹{myPaid.toFixed(2)}</p>
+            <p className="text-3xl font-bold">₹{myPaid.toLocaleString("en-IN", { minimumFractionDigits: 2 })}</p>
           </div>
 
           <div className="bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl p-4 text-white shadow-md shadow-emerald-200">
             <div className="flex items-center gap-1.5 mb-2 opacity-80">
-              <Users size={14} />
-              <p className="text-xs font-medium">Your Share</p>
+              <Users size={15} />
+              <p className="text-sm font-semibold">Your Share</p>
             </div>
-            <p className="text-2xl font-bold">₹{myShare.toFixed(2)}</p>
+            <p className="text-3xl font-bold">₹{myShare.toLocaleString("en-IN", { minimumFractionDigits: 2 })}</p>
           </div>
 
-          <div className={`rounded-2xl p-4 text-white shadow-md ₹{
+          <div className={`rounded-2xl p-4 text-white shadow-md ${
             pendingSettlement > 0
               ? "bg-gradient-to-br from-rose-500 to-pink-600 shadow-rose-200"
               : "bg-gradient-to-br from-green-500 to-emerald-600 shadow-green-200"
           }`}>
             <div className="flex items-center gap-1.5 mb-2 opacity-80">
-              <AlertCircle size={14} />
-              <p className="text-xs font-medium">You Owe</p>
+              <AlertCircle size={15} />
+              <p className="text-sm font-semibold">You Owe</p>
             </div>
-            <p className="text-2xl font-bold">₹{pendingSettlement.toFixed(2)}</p>
+            <p className="text-3xl font-bold">₹{pendingSettlement.toLocaleString("en-IN", { minimumFractionDigits: 2 })}</p>
           </div>
         </div>
 
@@ -110,7 +110,7 @@ export default function DashboardClient({
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="px-4 pt-4 pb-1 flex items-center gap-2">
             <div className="w-1 h-5 bg-gradient-to-b from-violet-500 to-indigo-500 rounded-full" />
-            <h2 className="text-sm font-bold text-gray-700">Spending by Category</h2>
+            <h2 className="text-base font-bold text-gray-700">Spending by Category</h2>
           </div>
           <CategoryChart data={categoryData} />
         </div>
@@ -119,7 +119,7 @@ export default function DashboardClient({
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="px-4 pt-4 pb-1 flex items-center gap-2">
             <div className="w-1 h-5 bg-gradient-to-b from-blue-500 to-cyan-500 rounded-full" />
-            <h2 className="text-sm font-bold text-gray-700">Payment by Member</h2>
+            <h2 className="text-base font-bold text-gray-700">Payment by Member</h2>
           </div>
           <div className="px-2 pb-2">
             <MemberPaymentChart data={memberData} />
@@ -130,7 +130,7 @@ export default function DashboardClient({
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="px-4 pt-4 pb-1 flex items-center gap-2">
             <div className="w-1 h-5 bg-gradient-to-b from-emerald-500 to-teal-500 rounded-full" />
-            <h2 className="text-sm font-bold text-gray-700">6-Month Trend</h2>
+            <h2 className="text-base font-bold text-gray-700">6-Month Trend</h2>
           </div>
           <div className="px-2 pb-2">
             <TrendChart data={trendData} />
@@ -141,23 +141,23 @@ export default function DashboardClient({
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-2">
           <div className="px-4 pt-4 pb-2 flex items-center gap-2">
             <div className="w-1 h-5 bg-gradient-to-b from-rose-500 to-pink-500 rounded-full" />
-            <h2 className="text-sm font-bold text-gray-700">Settlements — {MONTH_NAMES[month - 1]}</h2>
+            <h2 className="text-base font-bold text-gray-700">Settlements — {MONTH_NAMES[month - 1]}</h2>
           </div>
           {settlements.length === 0 ? (
             <div className="px-4 pb-4 flex items-center gap-2 text-emerald-600">
-              <span className="text-lg">✅</span>
-              <p className="text-sm font-medium">All settled up!</p>
+              <span className="text-xl">✅</span>
+              <p className="text-base font-semibold">All settled up!</p>
             </div>
           ) : (
             <ul className="px-4 pb-4 space-y-2">
               {settlements.map((s, i) => (
-                <li key={i} className="flex items-center justify-between bg-rose-50 rounded-xl px-3 py-2.5">
-                  <div className="flex items-center gap-2 text-sm">
-                    <span className="font-semibold text-rose-600">{s.from}</span>
+                <li key={i} className="flex items-center justify-between bg-rose-50 rounded-xl px-3 py-3">
+                  <div className="flex items-center gap-2 text-base">
+                    <span className="font-bold text-rose-600">{s.from}</span>
                     <span className="text-gray-400">→</span>
-                    <span className="font-semibold text-emerald-600">{s.to}</span>
+                    <span className="font-bold text-emerald-600">{s.to}</span>
                   </div>
-                  <span className="font-bold text-gray-800 text-sm">₹{s.amount.toFixed(2)}</span>
+                  <span className="font-bold text-gray-800 text-base">₹{s.amount.toLocaleString("en-IN", { minimumFractionDigits: 2 })}</span>
                 </li>
               ))}
             </ul>

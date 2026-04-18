@@ -30,19 +30,23 @@ export async function getDashboardData(
     value: parseFloat(value.toFixed(2)),
   }));
 
-  // Payment by member
-  const byMember: Record<string, { name: string; paid: number }> = {};
+  // Payment by member — split into self (not shared) vs shared
+  const byMember: Record<string, { name: string; self: number; shared: number }> = {};
   for (const m of members ?? []) {
-    byMember[m.id] = { name: m.full_name, paid: 0 };
+    byMember[m.id] = { name: m.full_name, self: 0, shared: 0 };
   }
   for (const e of expenses ?? []) {
-    if (byMember[e.paid_by]) {
-      byMember[e.paid_by].paid += Number(e.amount);
+    if (!byMember[e.paid_by]) continue;
+    if (e.is_split) {
+      byMember[e.paid_by].shared += Number(e.amount);
+    } else {
+      byMember[e.paid_by].self += Number(e.amount);
     }
   }
   const memberData = Object.values(byMember).map((m) => ({
     name: m.name,
-    paid: parseFloat(m.paid.toFixed(2)),
+    self: parseFloat(m.self.toFixed(2)),
+    shared: parseFloat(m.shared.toFixed(2)),
   }));
 
   return { expenses: expenses ?? [], members: members ?? [], totalSpent, categoryData, memberData };
