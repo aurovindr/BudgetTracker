@@ -1,10 +1,16 @@
-import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
+import { getDashboardData, getMonthlyTrend, computeSettlements } from "@/lib/dashboard";
+import AppShell from "@/components/layout/AppShell";
+import DashboardClient from "./DashboardClient";
 
-export default async function DashboardPage() {
+interface PageProps {
+  searchParams: Promise<{ month?: string; year?: string }>;
+}
+
+export default async function DashboardPage({ searchParams }: PageProps) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-
   if (!user) redirect("/login");
 
   const { data: member } = await supabase
@@ -13,12 +19,50 @@ export default async function DashboardPage() {
     .eq("id", user.id)
     .single();
 
+  const params = await searchParams;
+  const now = new Date();
+  const year = parseInt(params.year ?? String(now.getFullYear()));
+  const month = parseInt(params.month ?? String(now.getMonth() + 1));
+
+  const [{ expenses, members, totalSpent, categoryData, memberData }, trendData] =
+    await Promise.all([
+      getDashboardData(supabase, year, month),
+      getMonthlyTrend(supabase),
+    ]);
+
+  const settlements = computeSettlements(
+    expenses as Parameters<typeof computeSettlements>[0],
+    members
+  );
+
+  const memberCount = members.length || 1;
+  const myPaid = expenses
+    .filter((e) => e.paid_by === user.id)
+    .reduce((s, e) => s + Number(e.amount), 0);
+
+  const myShare = expenses
+    .filter((e) => e.is_split)
+    .reduce((s, e) => s + Number(e.amount) / memberCount, 0);
+
+  const pendingSettlement = settlements
+    .filter((s) => s.from === member?.full_name)
+    .reduce((sum, s) => sum + s.amount, 0);
+
   return (
-    <main className="min-h-screen bg-gray-50 p-6">
-      <h1 className="text-2xl font-semibold text-gray-800">
-        Welcome, {member?.full_name ?? "Member"}
-      </h1>
-      <p className="mt-2 text-gray-500">Dashboard coming soon.</p>
-    </main>
+    <AppShell memberId={user.id} memberName={member?.full_name ?? "Member"}>
+      <DashboardClient
+        memberName={member?.full_name ?? "Member"}
+        year={year}
+        month={month}
+        totalSpent={totalSpent}
+        myPaid={myPaid}
+        myShare={myShare}
+        pendingSettlement={pendingSettlement}
+        categoryData={categoryData}
+        memberData={memberData}
+        trendData={trendData}
+        settlements={settlements}
+      />
+    </AppShell>
   );
 }
