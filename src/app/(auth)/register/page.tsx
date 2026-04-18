@@ -33,7 +33,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-600 px-4 py-8">
+    <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-indigo-600 via-violet-600 to-indigo-700 px-4 py-8">
       {/* Logo */}
       <div className="mb-6 text-center">
         <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-3 backdrop-blur">
@@ -53,7 +53,7 @@ export default function RegisterPage() {
               id="fullName" type="text" placeholder="Jane Smith"
               value={fullName} onChange={(e) => setFullName(e.target.value)}
               required autoComplete="name"
-              className="rounded-xl border-gray-200 focus:border-emerald-400 h-11"
+              className="rounded-xl border-gray-200 focus:border-violet-400 h-11"
             />
           </div>
           <div className="space-y-1.5">
@@ -62,7 +62,7 @@ export default function RegisterPage() {
               id="email" type="email" placeholder="you@example.com"
               value={email} onChange={(e) => setEmail(e.target.value)}
               required autoComplete="email"
-              className="rounded-xl border-gray-200 focus:border-emerald-400 h-11"
+              className="rounded-xl border-gray-200 focus:border-violet-400 h-11"
             />
           </div>
           <div className="space-y-1.5">
@@ -71,7 +71,7 @@ export default function RegisterPage() {
               id="pin" type="password" inputMode="numeric" maxLength={4} placeholder="••••"
               value={pin} onChange={(e) => setPin(e.target.value.replace(/\D/g, ""))}
               required
-              className="rounded-xl border-gray-200 focus:border-emerald-400 h-11 text-center text-xl tracking-[0.5em]"
+              className="rounded-xl border-gray-200 focus:border-violet-400 h-11 text-center text-xl tracking-[0.5em]"
             />
           </div>
           <div className="space-y-1.5">
@@ -80,7 +80,7 @@ export default function RegisterPage() {
               id="confirmPin" type="password" inputMode="numeric" maxLength={4} placeholder="••••"
               value={confirmPin} onChange={(e) => setConfirmPin(e.target.value.replace(/\D/g, ""))}
               required
-              className="rounded-xl border-gray-200 focus:border-emerald-400 h-11 text-center text-xl tracking-[0.5em]"
+              className="rounded-xl border-gray-200 focus:border-violet-400 h-11 text-center text-xl tracking-[0.5em]"
             />
           </div>
           {error && (
@@ -88,14 +88,14 @@ export default function RegisterPage() {
           )}
           <button
             type="submit" disabled={loading}
-            className="w-full h-12 rounded-xl font-semibold text-white bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 transition-all shadow-lg shadow-emerald-200 disabled:opacity-60 mt-2"
+            className="w-full h-12 rounded-xl font-semibold text-white bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 transition-all shadow-lg shadow-indigo-200 disabled:opacity-60 mt-2"
           >
             {loading ? "Creating account…" : "Create Account"}
           </button>
         </form>
         <p className="text-center text-sm text-gray-500 mt-5">
           Already have an account?{" "}
-          <Link href="/login" className="text-emerald-600 font-semibold hover:underline">
+          <Link href="/login" className="text-violet-600 font-semibold hover:underline">
             Sign in
           </Link>
         </p>

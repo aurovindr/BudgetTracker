@@ -101,7 +101,7 @@ export default function ExpensesClient({ expenses, year, month, currentMemberId 
   return (
     <div className="space-y-4">
       {/* Gradient Header */}
-      <div className="bg-gradient-to-br from-blue-500 via-cyan-500 to-teal-500 px-5 pt-8 pb-6 rounded-b-3xl shadow-lg">
+      <div className="bg-gradient-to-br from-indigo-600 via-violet-600 to-indigo-700 px-5 pt-8 pb-6 rounded-b-3xl shadow-lg">
         <h1 className="text-2xl font-bold text-white mb-0.5">Expenses</h1>
         <p className="text-white/80 text-base font-medium mb-4">
           ₹{totalFiltered.toLocaleString("en-IN", { minimumFractionDigits: 2 })} total
@@ -110,7 +110,9 @@ export default function ExpensesClient({ expenses, year, month, currentMemberId 
 
         {/* Dropdowns */}
         <div className="grid grid-cols-2 gap-2 mb-4">
-          <Select value={typeFilter} onValueChange={(v) => setTypeFilter(v as TypeFilter)}>
+          <div>
+            <p className="text-white/70 text-xs font-bold uppercase tracking-widest mb-1 px-1">Type</p>
+            <Select value={typeFilter} onValueChange={(v) => setTypeFilter(v as TypeFilter)}>
             <SelectTrigger className="bg-white/20 border-0 text-white rounded-xl h-10 text-sm font-semibold [&>svg]:text-white">
               <SelectValue />
             </SelectTrigger>
@@ -120,8 +122,11 @@ export default function ExpensesClient({ expenses, year, month, currentMemberId 
               ))}
             </SelectContent>
           </Select>
+          </div>
 
-          <Select value={categoryFilter} onValueChange={(v) => setCategoryFilter(v ?? "all")}>
+          <div>
+            <p className="text-white/70 text-xs font-bold uppercase tracking-widest mb-1 px-1">Category</p>
+            <Select value={categoryFilter} onValueChange={(v) => setCategoryFilter(v ?? "all")}>
             <SelectTrigger className="bg-white/20 border-0 text-white rounded-xl h-10 text-sm font-semibold [&>svg]:text-white">
               <SelectValue />
             </SelectTrigger>
@@ -134,6 +139,7 @@ export default function ExpensesClient({ expenses, year, month, currentMemberId 
               ))}
             </SelectContent>
           </Select>
+          </div>
         </div>
 
         <div className="flex items-center justify-between bg-white/15 backdrop-blur rounded-2xl px-4 py-2.5">

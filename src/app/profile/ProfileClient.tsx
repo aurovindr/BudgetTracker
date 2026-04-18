@@ -58,7 +58,7 @@ export default function ProfileClient({ fullName, email, totalPaid, myShare, bal
   return (
     <div className="space-y-4">
       {/* Gradient Header with Avatar */}
-      <div className="bg-gradient-to-br from-rose-500 via-pink-500 to-fuchsia-600 px-5 pt-8 pb-8 rounded-b-3xl shadow-lg flex flex-col items-center">
+      <div className="bg-gradient-to-br from-indigo-600 via-violet-600 to-indigo-700 px-5 pt-8 pb-8 rounded-b-3xl shadow-lg flex flex-col items-center">
         <div className="w-20 h-20 rounded-2xl bg-white/25 backdrop-blur flex items-center justify-center mb-3 shadow-inner">
           <span className="text-3xl font-bold text-white">{initials}</span>
         </div>
@@ -70,7 +70,7 @@ export default function ProfileClient({ fullName, email, totalPaid, myShare, bal
         {/* This Month Stats */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="px-4 pt-4 pb-2 flex items-center gap-2">
-            <div className="w-1 h-5 bg-gradient-to-b from-rose-500 to-pink-500 rounded-full" />
+            <div className="w-1 h-5 bg-gradient-to-b from-indigo-500 to-violet-500 rounded-full" />
             <h2 className="text-sm font-bold text-gray-700">This Month</h2>
           </div>
           <div className="px-4 pb-4 space-y-3">
@@ -96,12 +96,12 @@ export default function ProfileClient({ fullName, email, totalPaid, myShare, bal
             <Separator />
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 text-sm text-gray-500">
-                <div className={`w-7 h-7 rounded-lg flex items-center justify-center ₹{balance >= 0 ? "bg-green-100" : "bg-red-100"}`}>
+                <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${balance >= 0 ? "bg-green-100" : "bg-red-100"}`}>
                   <Scale size={14} className={balance >= 0 ? "text-green-600" : "text-red-500"} />
                 </div>
                 Balance
               </div>
-              <span className={`font-bold text-lg ₹{balance >= 0 ? "text-green-600" : "text-red-500"}`}>
+              <span className={`font-bold text-lg ${balance >= 0 ? "text-green-600" : "text-red-500"}`}>
                 {balance >= 0 ? "+" : ""}₹{balance.toFixed(2)}
               </span>
             </div>
