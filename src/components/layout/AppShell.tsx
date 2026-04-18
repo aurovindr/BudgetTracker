@@ -14,7 +14,7 @@ export default function AppShell({ children, memberId, memberName }: AppShellPro
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gray-50 max-w-lg mx-auto relative">
+    <div className="min-h-screen bg-gray-50 relative">
       <main className="pb-20">{children}</main>
       <BottomNav onAddClick={() => setDrawerOpen(true)} />
       <AddExpenseDrawer

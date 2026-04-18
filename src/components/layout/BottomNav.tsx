@@ -19,7 +19,7 @@ export default function BottomNav({ onAddClick }: BottomNavProps) {
     );
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/90 backdrop-blur border-t border-gray-100 flex items-center justify-around h-16 max-w-lg mx-auto shadow-lg">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/90 backdrop-blur border-t border-gray-100 flex items-center justify-around h-16 shadow-lg">
       <Link href="/dashboard" className={linkClass("/dashboard")}>
         <Home size={22} strokeWidth={pathname === "/dashboard" ? 2.5 : 1.8} />
         <span className={pathname === "/dashboard" ? "font-semibold" : ""}>Home</span>

@@ -40,7 +40,7 @@ export default function DashboardClient({
 
   function navigate(dir: -1 | 1) {
     const d = new Date(year, month - 1 + dir);
-    router.push(`/dashboard?year=${d.getFullYear()}&month=${d.getMonth() + 1}`);
+    router.push(`/dashboard?year=₹{d.getFullYear()}&month=₹{d.getMonth() + 1}`);
   }
 
   const firstName = memberName.split(" ")[0];
@@ -74,7 +74,7 @@ export default function DashboardClient({
               <Wallet size={14} />
               <p className="text-xs font-medium">Total Spent</p>
             </div>
-            <p className="text-2xl font-bold">${totalSpent.toFixed(2)}</p>
+            <p className="text-2xl font-bold">₹{totalSpent.toFixed(2)}</p>
           </div>
 
           <div className="bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl p-4 text-white shadow-md shadow-blue-200">
@@ -82,7 +82,7 @@ export default function DashboardClient({
               <TrendingUp size={14} />
               <p className="text-xs font-medium">You Paid</p>
             </div>
-            <p className="text-2xl font-bold">${myPaid.toFixed(2)}</p>
+            <p className="text-2xl font-bold">₹{myPaid.toFixed(2)}</p>
           </div>
 
           <div className="bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl p-4 text-white shadow-md shadow-emerald-200">
@@ -90,10 +90,10 @@ export default function DashboardClient({
               <Users size={14} />
               <p className="text-xs font-medium">Your Share</p>
             </div>
-            <p className="text-2xl font-bold">${myShare.toFixed(2)}</p>
+            <p className="text-2xl font-bold">₹{myShare.toFixed(2)}</p>
           </div>
 
-          <div className={`rounded-2xl p-4 text-white shadow-md ${
+          <div className={`rounded-2xl p-4 text-white shadow-md ₹{
             pendingSettlement > 0
               ? "bg-gradient-to-br from-rose-500 to-pink-600 shadow-rose-200"
               : "bg-gradient-to-br from-green-500 to-emerald-600 shadow-green-200"
@@ -102,7 +102,7 @@ export default function DashboardClient({
               <AlertCircle size={14} />
               <p className="text-xs font-medium">You Owe</p>
             </div>
-            <p className="text-2xl font-bold">${pendingSettlement.toFixed(2)}</p>
+            <p className="text-2xl font-bold">₹{pendingSettlement.toFixed(2)}</p>
           </div>
         </div>
 
@@ -157,7 +157,7 @@ export default function DashboardClient({
                     <span className="text-gray-400">→</span>
                     <span className="font-semibold text-emerald-600">{s.to}</span>
                   </div>
-                  <span className="font-bold text-gray-800 text-sm">${s.amount.toFixed(2)}</span>
+                  <span className="font-bold text-gray-800 text-sm">₹{s.amount.toFixed(2)}</span>
                 </li>
               ))}
             </ul>

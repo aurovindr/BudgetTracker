@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { X } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { CATEGORIES, CATEGORY_COLORS, Category } from "@/lib/constants";
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -75,77 +75,98 @@ export default function AddExpenseDrawer({ open, onOpenChange, memberId, memberN
     onOpenChange(false);
   }
 
-  const selectedColor = category ? (CATEGORY_COLORS[category as Category] ?? "#94a3b8") : "#94a3b8";
+  const accentColor = category ? (CATEGORY_COLORS[category as Category] ?? "#6d28d9") : "#6d28d9";
+
+  if (!open) return null;
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="bottom" className="rounded-t-3xl max-h-[95vh] overflow-y-auto p-0">
-        {/* Coloured header */}
-        <div
-          className="px-5 pt-5 pb-4 rounded-t-3xl"
-          style={{ background: `linear-gradient(135deg, ${selectedColor}cc, ${selectedColor}88)` }}
-        >
-          <SheetHeader>
-            <SheetTitle className="text-white text-lg font-bold text-left">
-              {category ? `${CATEGORY_EMOJI[category] ?? "📦"} ${category}` : "Add Expense"}
-            </SheetTitle>
-          </SheetHeader>
+    <div className="fixed inset-0 z-50 flex flex-col bg-white">
+      {/* Header */}
+      <div
+        className="flex items-center justify-between px-5 pt-12 pb-5"
+        style={{ background: `linear-gradient(135deg, ${accentColor}dd, ${accentColor}99)` }}
+      >
+        <div>
+          <p className="text-white/70 text-xs font-medium uppercase tracking-widest mb-0.5">New Expense</p>
+          <h2 className="text-xl font-bold text-white">
+            {category ? `${CATEGORY_EMOJI[category]} ${category}` : "Add Expense"}
+          </h2>
           {amount && (
-            <p className="text-white/90 text-3xl font-bold mt-1">${parseFloat(amount || "0").toFixed(2)}</p>
+            <p className="text-white text-3xl font-bold mt-1">
+              ₹{parseFloat(amount || "0").toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            </p>
           )}
         </div>
+        <button
+          onClick={() => { reset(); onOpenChange(false); }}
+          className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center text-white"
+        >
+          <X size={18} />
+        </button>
+      </div>
 
-        <form onSubmit={handleSubmit} className="px-5 py-4 space-y-4">
+      {/* Form */}
+      <form onSubmit={handleSubmit} className="flex flex-col flex-1 px-5 py-5 space-y-4 overflow-hidden justify-between">
+        <div className="space-y-4">
+          {/* Date + Amount */}
           <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1.5">
+            <div className="space-y-1">
               <Label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Date</Label>
               <Input type="date" value={date} onChange={(e) => setDate(e.target.value)}
-                required className="rounded-xl h-11 border-gray-200" />
+                required className="rounded-xl h-11 border-gray-200 text-sm" />
             </div>
-            <div className="space-y-1.5">
-              <Label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Amount ($)</Label>
+            <div className="space-y-1">
+              <Label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Amount (₹)</Label>
               <Input type="number" inputMode="decimal" min="0.01" step="0.01" placeholder="0.00"
                 value={amount} onChange={(e) => setAmount(e.target.value)}
-                required className="rounded-xl h-11 border-gray-200 font-semibold" />
+                required className="rounded-xl h-11 border-gray-200 font-semibold text-sm" />
             </div>
           </div>
 
-          <div className="space-y-1.5">
-            <Label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Description</Label>
-            <Input placeholder="e.g. Weekly groceries" value={description}
-              onChange={(e) => setDescription(e.target.value)} required
-              className="rounded-xl h-11 border-gray-200" />
+          {/* Description + Category */}
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1">
+              <Label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Description</Label>
+              <Input placeholder="e.g. Groceries" value={description}
+                onChange={(e) => setDescription(e.target.value)} required
+                className="rounded-xl h-11 border-gray-200 text-sm" />
+            </div>
+            <div className="space-y-1">
+              <Label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Category</Label>
+              <Select value={category} onValueChange={(v) => setCategory(v ?? "")}>
+                <SelectTrigger className="rounded-xl h-11 border-gray-200 text-sm">
+                  <SelectValue placeholder="Select ▾" />
+                </SelectTrigger>
+                <SelectContent className="rounded-xl">
+                  {CATEGORIES.map((c) => (
+                    <SelectItem key={c} value={c}>
+                      <span className="flex items-center gap-2">
+                        <span>{CATEGORY_EMOJI[c]}</span><span>{c}</span>
+                      </span>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
-          <div className="space-y-1.5">
-            <Label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Category</Label>
-            <Select value={category} onValueChange={(v) => setCategory(v ?? "")}>
-              <SelectTrigger className="rounded-xl h-11 border-gray-200">
-                <SelectValue placeholder="Select category" />
-              </SelectTrigger>
-              <SelectContent className="rounded-xl">
-                {CATEGORIES.map((c) => (
-                  <SelectItem key={c} value={c}>
-                    <span className="flex items-center gap-2">
-                      <span>{CATEGORY_EMOJI[c]}</span>
-                      <span>{c}</span>
-                    </span>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-1.5">
-            <Label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Paid By</Label>
-            <div className="h-11 rounded-xl border border-gray-200 bg-gray-50 flex items-center px-3 text-sm text-gray-500">
-              {memberName} (you)
+          {/* Paid By */}
+          <div className="flex items-center gap-3 bg-gray-50 rounded-xl px-4 py-3">
+            <div
+              className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white flex-shrink-0"
+              style={{ backgroundColor: accentColor }}
+            >
+              {memberName.charAt(0).toUpperCase()}
+            </div>
+            <div>
+              <p className="text-xs text-gray-400 font-medium">Paid By</p>
+              <p className="text-sm font-semibold text-gray-700">{memberName} (you)</p>
             </div>
           </div>
 
           {/* Toggles */}
-          <div className="bg-gray-50 rounded-2xl p-4 space-y-3">
-            <label className="flex items-center justify-between cursor-pointer">
+          <div className="bg-gray-50 rounded-2xl divide-y divide-gray-200">
+            <label className="flex items-center justify-between px-4 py-3 cursor-pointer">
               <div>
                 <p className="text-sm font-semibold text-gray-700">Split equally</p>
                 <p className="text-xs text-gray-400">Divide among all members</p>
@@ -153,8 +174,7 @@ export default function AddExpenseDrawer({ open, onOpenChange, memberId, memberN
               <Checkbox checked={isSplit} onCheckedChange={(v) => setIsSplit(!!v)}
                 className="w-5 h-5 data-[state=checked]:bg-violet-600 data-[state=checked]:border-violet-600" />
             </label>
-            <Separator />
-            <label className="flex items-center justify-between cursor-pointer">
+            <label className="flex items-center justify-between px-4 py-3 cursor-pointer">
               <div>
                 <p className="text-sm font-semibold text-gray-700">Recurring monthly</p>
                 <p className="text-xs text-gray-400">Repeats every month</p>
@@ -165,17 +185,17 @@ export default function AddExpenseDrawer({ open, onOpenChange, memberId, memberN
           </div>
 
           {error && <p className="text-sm text-red-500 bg-red-50 rounded-xl px-3 py-2">{error}</p>}
+        </div>
 
-          <button type="submit" disabled={loading}
-            className="w-full h-13 py-3.5 rounded-2xl font-bold text-white text-base bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 shadow-lg shadow-violet-200 disabled:opacity-60 transition-all">
-            {loading ? "Saving…" : "Save Expense"}
-          </button>
-        </form>
-      </SheetContent>
-    </Sheet>
+        {/* Save Button */}
+        <button
+          type="submit" disabled={loading}
+          className="w-full py-4 rounded-2xl font-bold text-white text-base shadow-lg disabled:opacity-60 transition-all"
+          style={{ background: `linear-gradient(135deg, ${accentColor}, ${accentColor}bb)` }}
+        >
+          {loading ? "Saving…" : "Save Expense"}
+        </button>
+      </form>
+    </div>
   );
-}
-
-function Separator() {
-  return <div className="h-px bg-gray-200" />;
 }

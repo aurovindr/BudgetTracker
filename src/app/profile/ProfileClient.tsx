@@ -81,7 +81,7 @@ export default function ProfileClient({ fullName, email, totalPaid, myShare, bal
                 </div>
                 Total Paid
               </div>
-              <span className="font-bold text-gray-800">${totalPaid.toFixed(2)}</span>
+              <span className="font-bold text-gray-800">₹{totalPaid.toFixed(2)}</span>
             </div>
             <Separator />
             <div className="flex items-center justify-between">
@@ -91,18 +91,18 @@ export default function ProfileClient({ fullName, email, totalPaid, myShare, bal
                 </div>
                 Your Share
               </div>
-              <span className="font-bold text-gray-800">${myShare.toFixed(2)}</span>
+              <span className="font-bold text-gray-800">₹{myShare.toFixed(2)}</span>
             </div>
             <Separator />
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 text-sm text-gray-500">
-                <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${balance >= 0 ? "bg-green-100" : "bg-red-100"}`}>
+                <div className={`w-7 h-7 rounded-lg flex items-center justify-center ₹{balance >= 0 ? "bg-green-100" : "bg-red-100"}`}>
                   <Scale size={14} className={balance >= 0 ? "text-green-600" : "text-red-500"} />
                 </div>
                 Balance
               </div>
-              <span className={`font-bold text-lg ${balance >= 0 ? "text-green-600" : "text-red-500"}`}>
-                {balance >= 0 ? "+" : ""}${balance.toFixed(2)}
+              <span className={`font-bold text-lg ₹{balance >= 0 ? "text-green-600" : "text-red-500"}`}>
+                {balance >= 0 ? "+" : ""}₹{balance.toFixed(2)}
               </span>
             </div>
           </div>
