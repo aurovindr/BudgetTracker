@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ChevronLeft, ChevronRight, RefreshCw, SlidersHorizontal, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, RefreshCw } from "lucide-react";
 import { CATEGORY_COLORS, CATEGORIES, Category } from "@/lib/constants";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface Expense {
   id: string;
@@ -59,7 +60,6 @@ function formatDate(dateStr: string) {
 
 export default function ExpensesClient({ expenses, year, month, currentMemberId }: Props) {
   const router = useRouter();
-  const [filterOpen, setFilterOpen] = useState(false);
   const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
 
@@ -102,42 +102,41 @@ export default function ExpensesClient({ expenses, year, month, currentMemberId 
     <div className="space-y-4">
       {/* Gradient Header */}
       <div className="bg-gradient-to-br from-blue-500 via-cyan-500 to-teal-500 px-5 pt-8 pb-6 rounded-b-3xl shadow-lg">
-        <div className="flex items-start justify-between mb-1">
-          <div>
-            <h1 className="text-2xl font-bold text-white">Expenses</h1>
-            <p className="text-white/80 text-base font-medium mt-0.5">
-              ₹{totalFiltered.toLocaleString("en-IN", { minimumFractionDigits: 2 })} total
-              {activeFilterCount > 0 && " (filtered)"}
-            </p>
-          </div>
-          <button
-            onClick={() => setFilterOpen(true)}
-            className="flex items-center gap-1.5 bg-white/20 backdrop-blur rounded-xl px-3 py-2 mt-1"
-          >
-            <SlidersHorizontal size={16} className="text-white" />
-            <span className="text-white text-sm font-semibold">
-              Filter{activeFilterCount > 0 ? ` · ${activeFilterCount}` : ""}
-            </span>
-          </button>
+        <h1 className="text-2xl font-bold text-white mb-0.5">Expenses</h1>
+        <p className="text-white/80 text-base font-medium mb-4">
+          ₹{totalFiltered.toLocaleString("en-IN", { minimumFractionDigits: 2 })} total
+          {activeFilterCount > 0 && " (filtered)"}
+        </p>
+
+        {/* Dropdowns */}
+        <div className="grid grid-cols-2 gap-2 mb-4">
+          <Select value={typeFilter} onValueChange={(v) => setTypeFilter(v as TypeFilter)}>
+            <SelectTrigger className="bg-white/20 border-0 text-white rounded-xl h-10 text-sm font-semibold [&>svg]:text-white">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="rounded-xl">
+              {TYPE_OPTIONS.map((o) => (
+                <SelectItem key={o.value} value={o.value} className="text-sm">{o.label}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <Select value={categoryFilter} onValueChange={(v) => setCategoryFilter(v ?? "all")}>
+            <SelectTrigger className="bg-white/20 border-0 text-white rounded-xl h-10 text-sm font-semibold [&>svg]:text-white">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="rounded-xl">
+              <SelectItem value="all" className="text-sm">All Categories</SelectItem>
+              {CATEGORIES.map((c) => (
+                <SelectItem key={c} value={c} className="text-sm">
+                  {CATEGORY_EMOJI[c]} {c}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
-        {/* Active filter chips */}
-        {activeFilterCount > 0 && (
-          <div className="flex gap-2 mt-3 flex-wrap">
-            {typeFilter !== "all" && (
-              <span className="bg-white/25 text-white text-xs font-semibold rounded-full px-3 py-1">
-                {TYPE_OPTIONS.find(o => o.value === typeFilter)?.label}
-              </span>
-            )}
-            {categoryFilter !== "all" && (
-              <span className="bg-white/25 text-white text-xs font-semibold rounded-full px-3 py-1">
-                {CATEGORY_EMOJI[categoryFilter]} {categoryFilter}
-              </span>
-            )}
-          </div>
-        )}
-
-        <div className="flex items-center justify-between bg-white/15 backdrop-blur rounded-2xl px-4 py-2.5 mt-4">
+        <div className="flex items-center justify-between bg-white/15 backdrop-blur rounded-2xl px-4 py-2.5">
           <button onClick={() => navigate(-1)} disabled={isMinMonth} className="text-white disabled:opacity-30">
             <ChevronLeft size={20} />
           </button>
@@ -221,106 +220,6 @@ export default function ExpensesClient({ expenses, year, month, currentMemberId 
         )}
       </div>
 
-      {/* Filter Sheet */}
-      {filterOpen && (
-        <div className="fixed inset-0 z-50 flex flex-col justify-end">
-          {/* Backdrop */}
-          <div className="absolute inset-0 bg-black/40" onClick={() => setFilterOpen(false)} />
-
-          <div className="relative bg-white rounded-t-3xl px-5 pt-5 pb-10 space-y-6">
-            {/* Sheet header */}
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-bold text-gray-800">Filter Expenses</h2>
-              <button onClick={() => setFilterOpen(false)}
-                className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center">
-                <X size={18} className="text-gray-600" />
-              </button>
-            </div>
-
-            {/* Type filter */}
-            <div>
-              <p className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-3">Type</p>
-              <div className="space-y-2">
-                {TYPE_OPTIONS.map((opt) => (
-                  <button
-                    key={opt.value}
-                    onClick={() => setTypeFilter(opt.value)}
-                    className={`w-full flex items-center justify-between px-4 py-3.5 rounded-2xl border-2 transition-all ${
-                      typeFilter === opt.value
-                        ? "border-blue-500 bg-blue-50"
-                        : "border-gray-100 bg-gray-50"
-                    }`}
-                  >
-                    <div className="text-left">
-                      <p className={`text-base font-semibold ${typeFilter === opt.value ? "text-blue-700" : "text-gray-700"}`}>
-                        {opt.label}
-                      </p>
-                      <p className="text-xs text-gray-400 mt-0.5">{opt.desc}</p>
-                    </div>
-                    {typeFilter === opt.value && (
-                      <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0">
-                        <div className="w-2 h-2 rounded-full bg-white" />
-                      </div>
-                    )}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Category filter */}
-            <div>
-              <p className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-3">Category</p>
-              <div className="grid grid-cols-3 gap-2">
-                <button
-                  onClick={() => setCategoryFilter("all")}
-                  className={`py-3 rounded-2xl border-2 text-sm font-semibold transition-all ${
-                    categoryFilter === "all"
-                      ? "border-blue-500 bg-blue-50 text-blue-700"
-                      : "border-gray-100 bg-gray-50 text-gray-600"
-                  }`}
-                >
-                  All
-                </button>
-                {CATEGORIES.map((c) => {
-                  const color = CATEGORY_COLORS[c];
-                  const active = categoryFilter === c;
-                  return (
-                    <button
-                      key={c}
-                      onClick={() => setCategoryFilter(c)}
-                      className="py-3 rounded-2xl border-2 text-sm font-semibold transition-all flex flex-col items-center gap-1"
-                      style={{
-                        borderColor: active ? color : "#f3f4f6",
-                        backgroundColor: active ? color + "18" : "#f9fafb",
-                        color: active ? color : "#4b5563",
-                      }}
-                    >
-                      <span className="text-lg">{CATEGORY_EMOJI[c]}</span>
-                      <span className="text-[11px] leading-tight">{c}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Actions */}
-            <div className="flex gap-3 pt-1">
-              <button
-                onClick={clearFilters}
-                className="flex-1 py-3.5 rounded-2xl border-2 border-gray-200 text-gray-600 font-semibold text-base"
-              >
-                Clear All
-              </button>
-              <button
-                onClick={() => setFilterOpen(false)}
-                className="flex-1 py-3.5 rounded-2xl bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold text-base shadow-md"
-              >
-                Apply{activeFilterCount > 0 ? ` · ${activeFilterCount}` : ""}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
