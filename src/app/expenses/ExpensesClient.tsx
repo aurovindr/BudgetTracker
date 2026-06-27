@@ -101,7 +101,7 @@ export default function ExpensesClient({ expenses, year, month, currentMemberId 
   return (
     <div className="space-y-4">
       {/* Gradient Header */}
-      <div className="bg-gradient-to-br from-blue-500 via-cyan-500 to-teal-500 px-5 pt-8 pb-6 rounded-b-3xl shadow-lg">
+      <div className="bg-brand px-5 pt-8 pb-6 rounded-b-3xl shadow-lg">
         <h1 className="text-2xl font-bold text-white mb-0.5">Expenses</h1>
         <p className="text-white/80 text-base font-medium mb-4">
           ₹{totalFiltered.toLocaleString("en-IN", { minimumFractionDigits: 2 })} total
@@ -164,7 +164,7 @@ export default function ExpensesClient({ expenses, year, month, currentMemberId 
               {activeFilterCount > 0 ? "No expenses match your filters" : "No expenses this month"}
             </p>
             {activeFilterCount > 0 ? (
-              <button onClick={clearFilters} className="mt-3 text-blue-500 font-semibold text-sm">
+              <button onClick={clearFilters} className="mt-3 text-brand font-semibold text-sm">
                 Clear filters
               </button>
             ) : (
@@ -203,7 +203,7 @@ export default function ExpensesClient({ expenses, year, month, currentMemberId 
                               </span>
                               <span className="text-[10px] text-gray-400">{e.paid_by_member?.full_name ?? "—"}</span>
                               {e.is_split && (
-                                <span className="text-[10px] bg-violet-100 text-violet-600 font-medium rounded-full px-2 py-0.5">Split</span>
+                                <span className="text-[10px] bg-brand-tint text-brand font-medium rounded-full px-2 py-0.5">Split</span>
                               )}
                               {e.is_recurring && (
                                 <span className="text-[10px] bg-amber-100 text-amber-600 font-medium rounded-full px-2 py-0.5 flex items-center gap-1">

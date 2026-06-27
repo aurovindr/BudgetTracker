@@ -53,10 +53,10 @@ export async function getDashboardData(
 }
 
 export async function getMonthlyTrend(supabase: SupabaseClient) {
-  const months = Array.from({ length: 6 }, (_, i) => {
+  const months = Array.from({ length: 3 }, (_, i) => {
     const d = new Date();
     d.setDate(1);
-    d.setMonth(d.getMonth() - (5 - i));
+    d.setMonth(d.getMonth() - (2 - i));
     return { year: d.getFullYear(), month: d.getMonth() + 1 };
   });
 

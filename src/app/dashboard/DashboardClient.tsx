@@ -20,7 +20,6 @@ interface Props {
   categoryData: { name: string; value: number }[];
   memberData: { name: string; self: number; shared: number }[];
   trendData: { month: string; total: number }[];
-  settlements: { from: string; to: string; amount: number }[];
 }
 
 const MONTH_NAMES = [
@@ -32,7 +31,7 @@ const fmt = (n: number) => n.toLocaleString("en-IN", { minimumFractionDigits: 2,
 
 export default function DashboardClient({
   memberName, year, month, totalSpent, myPaid, myShare, pendingSettlement,
-  totalShared, perHead, youCovered, categoryData, memberData, trendData, settlements,
+  totalShared, perHead, youCovered, categoryData, memberData, trendData,
 }: Props) {
   const router = useRouter();
   const now = new Date();
@@ -53,8 +52,8 @@ export default function DashboardClient({
   return (
     <div className="space-y-4">
       {/* Header */}
-      <div className="bg-gradient-to-br from-violet-600 via-indigo-600 to-blue-500 px-5 pt-8 pb-6 rounded-b-3xl shadow-lg">
-        <p className="text-white/70 text-base mb-0.5">Good day,</p>
+      <div className="bg-brand px-5 pt-8 pb-6 rounded-b-3xl shadow-lg">
+        <p className="text-brand-light text-base mb-0.5">Good day,</p>
         <h1 className="text-3xl font-bold text-white mb-4">{firstName} 👋</h1>
         <div className="flex items-center justify-between bg-white/15 backdrop-blur rounded-2xl px-4 py-2.5">
           <button onClick={() => navigate(-1)} disabled={isMinMonth} className="text-white disabled:opacity-30">
@@ -73,25 +72,21 @@ export default function DashboardClient({
         <div>
           <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 px-1">Your Summary</p>
           <div className="grid grid-cols-2 gap-3">
-            <div className="bg-gradient-to-br from-violet-500 to-purple-600 rounded-2xl p-4 text-white shadow-md shadow-violet-200">
-              <div className="flex items-center gap-1.5 mb-2 opacity-80"><Wallet size={15} /><p className="text-sm font-semibold">Total Spent</p></div>
-              <p className="text-2xl font-bold">₹{fmt(totalSpent)}</p>
+            <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+              <div className="flex items-center gap-1.5 mb-2 text-brand"><Wallet size={15} /><p className="text-sm font-semibold text-gray-500">Total Spent</p></div>
+              <p className="text-2xl font-bold text-gray-900">₹{fmt(totalSpent)}</p>
             </div>
-            <div className="bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl p-4 text-white shadow-md shadow-blue-200">
-              <div className="flex items-center gap-1.5 mb-2 opacity-80"><TrendingUp size={15} /><p className="text-sm font-semibold">You Paid</p></div>
-              <p className="text-2xl font-bold">₹{fmt(myPaid)}</p>
+            <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+              <div className="flex items-center gap-1.5 mb-2 text-brand"><TrendingUp size={15} /><p className="text-sm font-semibold text-gray-500">You Paid</p></div>
+              <p className="text-2xl font-bold text-gray-900">₹{fmt(myPaid)}</p>
             </div>
-            <div className="bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl p-4 text-white shadow-md shadow-emerald-200">
-              <div className="flex items-center gap-1.5 mb-2 opacity-80"><UserCheck size={15} /><p className="text-sm font-semibold">Your Share</p></div>
-              <p className="text-2xl font-bold">₹{fmt(myShare)}</p>
+            <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+              <div className="flex items-center gap-1.5 mb-2 text-emerald-600"><UserCheck size={15} /><p className="text-sm font-semibold text-gray-500">Your Share</p></div>
+              <p className="text-2xl font-bold text-gray-900">₹{fmt(myShare)}</p>
             </div>
-            <div className={`rounded-2xl p-4 text-white shadow-md ${
-              pendingSettlement > 0
-                ? "bg-gradient-to-br from-rose-500 to-pink-600 shadow-rose-100"
-                : "bg-gradient-to-br from-emerald-500 to-teal-600 shadow-emerald-100"
-            }`}>
-              <div className="flex items-center gap-1.5 mb-2 opacity-80"><AlertCircle size={15} /><p className="text-sm font-semibold">You Owe</p></div>
-              <p className="text-2xl font-bold">₹{fmt(pendingSettlement)}</p>
+            <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+              <div className={`flex items-center gap-1.5 mb-2 ${pendingSettlement > 0 ? "text-rose-500" : "text-emerald-600"}`}><AlertCircle size={15} /><p className="text-sm font-semibold text-gray-500">You Owe</p></div>
+              <p className={`text-2xl font-bold ${pendingSettlement > 0 ? "text-rose-500" : "text-gray-900"}`}>₹{fmt(pendingSettlement)}</p>
             </div>
           </div>
         </div>
@@ -102,8 +97,8 @@ export default function DashboardClient({
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 divide-y divide-gray-100">
             <div className="flex items-center justify-between px-4 py-3.5">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-indigo-100 flex items-center justify-center">
-                  <ArrowLeftRight size={16} className="text-indigo-600" />
+                <div className="w-9 h-9 rounded-xl bg-brand-tint flex items-center justify-center">
+                  <ArrowLeftRight size={16} className="text-brand" />
                 </div>
                 <div>
                   <p className="text-sm font-semibold text-gray-700">Total Split</p>
@@ -114,8 +109,8 @@ export default function DashboardClient({
             </div>
             <div className="flex items-center justify-between px-4 py-3.5">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-violet-100 flex items-center justify-center">
-                  <Users size={16} className="text-violet-600" />
+                <div className="w-9 h-9 rounded-xl bg-brand-tint flex items-center justify-center">
+                  <Users size={16} className="text-brand" />
                 </div>
                 <div>
                   <p className="text-sm font-semibold text-gray-700">Per Head</p>
@@ -144,7 +139,7 @@ export default function DashboardClient({
         {/* Charts */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="px-4 pt-4 pb-1 flex items-center gap-2">
-            <div className="w-1 h-5 bg-gradient-to-b from-violet-500 to-indigo-500 rounded-full" />
+            <div className="w-1 h-5 bg-brand rounded-full" />
             <h2 className="text-base font-bold text-gray-700">Spending by Category</h2>
           </div>
           <CategoryChart data={categoryData} />
@@ -152,7 +147,7 @@ export default function DashboardClient({
 
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="px-4 pt-4 pb-1 flex items-center gap-2">
-            <div className="w-1 h-5 bg-gradient-to-b from-blue-500 to-cyan-500 rounded-full" />
+            <div className="w-1 h-5 bg-brand rounded-full" />
             <h2 className="text-base font-bold text-gray-700">Payment by Member</h2>
           </div>
           <div className="px-2 pb-2">
@@ -162,40 +157,14 @@ export default function DashboardClient({
 
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="px-4 pt-4 pb-1 flex items-center gap-2">
-            <div className="w-1 h-5 bg-gradient-to-b from-emerald-500 to-teal-500 rounded-full" />
-            <h2 className="text-base font-bold text-gray-700">6-Month Trend</h2>
+            <div className="w-1 h-5 bg-brand rounded-full" />
+            <h2 className="text-base font-bold text-gray-700">3-Month Trend</h2>
           </div>
           <div className="px-2 pb-2">
             <TrendChart data={trendData} />
           </div>
         </div>
 
-        {/* Settlements */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-2">
-          <div className="px-4 pt-4 pb-2 flex items-center gap-2">
-            <div className="w-1 h-5 bg-gradient-to-b from-rose-500 to-pink-500 rounded-full" />
-            <h2 className="text-base font-bold text-gray-700">Settlements — {MONTH_NAMES[month - 1]}</h2>
-          </div>
-          {settlements.length === 0 ? (
-            <div className="px-4 pb-4 flex items-center gap-2 text-emerald-600">
-              <span className="text-xl">✅</span>
-              <p className="text-base font-semibold">All settled up!</p>
-            </div>
-          ) : (
-            <ul className="px-4 pb-4 space-y-2">
-              {settlements.map((s, i) => (
-                <li key={i} className="flex items-center justify-between bg-rose-50 rounded-xl px-3 py-3">
-                  <div className="flex items-center gap-2 text-base">
-                    <span className="font-bold text-rose-600">{s.from}</span>
-                    <span className="text-gray-400">→</span>
-                    <span className="font-bold text-emerald-600">{s.to}</span>
-                  </div>
-                  <span className="font-bold text-gray-800 text-base">₹{fmt(s.amount)}</span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
       </div>
     </div>
   );

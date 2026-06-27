@@ -31,7 +31,7 @@ export default function CategoryChart({ data }: Props) {
             />
           ))}
         </Pie>
-        <Tooltip formatter={(v) => `$${Number(v).toFixed(2)}`} />
+        <Tooltip formatter={(v) => `₹${Number(v).toLocaleString("en-IN", { minimumFractionDigits: 2 })}`} />
         <Legend iconType="circle" iconSize={10} />
       </PieChart>
     </ResponsiveContainer>

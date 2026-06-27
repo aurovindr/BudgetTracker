@@ -77,7 +77,6 @@ export default async function DashboardPage({ searchParams }: PageProps) {
         categoryData={categoryData}
         memberData={memberData}
         trendData={trendData}
-        settlements={settlements}
       />
     </AppShell>
   );

@@ -15,7 +15,7 @@ export default function AppShell({ children, memberId, memberName }: AppShellPro
 
   return (
     <div className="min-h-screen bg-gray-50 relative">
-      <main className="pb-20">{children}</main>
+      <main className="pb-[calc(5rem+env(safe-area-inset-bottom))]">{children}</main>
       <BottomNav onAddClick={() => setDrawerOpen(true)} />
       <AddExpenseDrawer
         open={drawerOpen}

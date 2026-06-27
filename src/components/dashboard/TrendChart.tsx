@@ -12,14 +12,14 @@ export default function TrendChart({ data }: Props) {
       <LineChart data={data} margin={{ left: 8, right: 16 }}>
         <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
         <XAxis dataKey="month" tick={{ fontSize: 11 }} />
-        <YAxis tickFormatter={(v) => `$${v}`} tick={{ fontSize: 11 }} width={48} />
-        <Tooltip formatter={(v) => `$${Number(v).toFixed(2)}`} />
+        <YAxis tickFormatter={(v) => `₹${v}`} tick={{ fontSize: 11 }} width={48} />
+        <Tooltip formatter={(v) => `₹${Number(v).toLocaleString("en-IN", { minimumFractionDigits: 2 })}`} />
         <Line
           type="monotone"
           dataKey="total"
-          stroke="#3b82f6"
+          stroke="#185fa5"
           strokeWidth={2}
-          dot={{ r: 4, fill: "#3b82f6" }}
+          dot={{ r: 4, fill: "#185fa5" }}
           activeDot={{ r: 6 }}
         />
       </LineChart>

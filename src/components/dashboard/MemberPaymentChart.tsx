@@ -25,8 +25,8 @@ export default function MemberPaymentChart({ data }: Props) {
           iconSize={10}
           wrapperStyle={{ fontSize: 12, paddingTop: 4 }}
         />
-        <Bar dataKey="self" name="self" stackId="a" fill="#6d28d9" radius={[0, 0, 0, 0]} barSize={20} />
-        <Bar dataKey="shared" name="shared" stackId="a" fill="#a78bfa" radius={[0, 6, 6, 0]} barSize={20} />
+        <Bar dataKey="self" name="self" stackId="a" fill="#185fa5" radius={[0, 0, 0, 0]} barSize={20} />
+        <Bar dataKey="shared" name="shared" stackId="a" fill="#85b7eb" radius={[0, 6, 6, 0]} barSize={20} />
       </BarChart>
     </ResponsiveContainer>
   );
