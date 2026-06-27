@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { X, CheckCircle2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { CATEGORIES, CATEGORY_COLORS, Category } from "@/lib/constants";
@@ -24,6 +25,7 @@ const CATEGORY_EMOJI: Record<string, string> = {
 const today = () => new Date().toISOString().split("T")[0];
 
 export default function AddExpenseDrawer({ open, onOpenChange, memberId, memberName }: AddExpenseDrawerProps) {
+  const router = useRouter();
   const [date, setDate] = useState(today());
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
@@ -74,6 +76,9 @@ export default function AddExpenseDrawer({ open, onOpenChange, memberId, memberN
 
     setLoading(false);
     setSuccess(true);
+    // Re-fetch the underlying server component so the new expense shows up
+    // on whichever page is behind the drawer (list or dashboard).
+    router.refresh();
     setTimeout(() => { reset(); onOpenChange(false); }, 1500);
   }
 
@@ -122,8 +127,8 @@ export default function AddExpenseDrawer({ open, onOpenChange, memberId, memberN
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="flex flex-col flex-1 px-5 py-5 space-y-4 overflow-hidden justify-between">
-        <div className="space-y-4">
+      <form onSubmit={handleSubmit} className="flex flex-col flex-1 min-h-0">
+        <div className="flex-1 overflow-y-auto px-5 py-5 space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
               <Label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Date</Label>
@@ -197,11 +202,14 @@ export default function AddExpenseDrawer({ open, onOpenChange, memberId, memberN
           {error && <p className="text-sm text-red-500 bg-red-50 rounded-xl px-3 py-2">{error}</p>}
         </div>
 
-        <button type="submit" disabled={loading}
-          className="w-full py-4 rounded-2xl font-bold text-white text-lg shadow-lg disabled:opacity-60 transition-all"
-          style={{ background: `linear-gradient(135deg, ${accentColor}, ${accentColor}bb)` }}>
-          {loading ? "Saving…" : "Save Expense"}
-        </button>
+        {/* Pinned footer so the button never overlaps the fields on short screens */}
+        <div className="px-5 py-4 border-t border-gray-100 bg-white">
+          <button type="submit" disabled={loading}
+            className="w-full py-4 rounded-2xl font-bold text-white text-lg shadow-lg disabled:opacity-60 transition-all"
+            style={{ background: `linear-gradient(135deg, ${accentColor}, ${accentColor}bb)` }}>
+            {loading ? "Saving…" : "Save Expense"}
+          </button>
+        </div>
       </form>
     </div>
   );
