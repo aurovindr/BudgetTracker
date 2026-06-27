@@ -56,6 +56,28 @@ then log in with your name + 4-digit PIN.
 `.env.local` is preconfigured to point at the local Supabase API
 (`http://127.0.0.1:54321`).
 
+## Running on a phone
+
+The app is mobile-first and works as a PWA. To open it on a phone on the same
+Wi-Fi network:
+
+1. Find your Mac's LAN IP: `ipconfig getifaddr en0` (e.g. `192.168.1.5`).
+2. Point the browser Supabase client at that IP instead of `127.0.0.1` — the
+   client runs in the **phone's** browser, where `127.0.0.1` would mean the phone
+   itself. In `.env.local`:
+
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=http://<YOUR_MAC_IP>:54321
+   ```
+
+3. Start the server bound to the network: `npm run dev:mobile`.
+4. On the phone, open `http://<YOUR_MAC_IP>:3000`. Optionally use
+   Share → Add to Home Screen for a fullscreen app-like experience.
+
+Notes: the macOS firewall may block incoming connections (allow `node` if so),
+and your Mac's LAN IP can change when it rejoins Wi-Fi — update `.env.local` if
+the phone suddenly can't sign in.
+
 ## Local URLs
 
 | Service | URL |
@@ -68,7 +90,8 @@ then log in with your name + 4-digit PIN.
 ## Common Commands
 
 ```bash
-npm run dev          # start the dev server
+npm run dev          # start the dev server (desktop, localhost only)
+npm run dev:mobile   # start bound to 0.0.0.0 so other devices on the LAN can reach it
 npm run build        # production build
 npm run start        # serve the production build
 npm run lint         # run ESLint
