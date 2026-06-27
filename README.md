@@ -6,17 +6,18 @@ no cloud services or external-network dependencies.
 
 ## Features
 
-- **Authentication** — member registration & login with name + 4-digit PIN
+- **Authentication** — member registration & login with name + 4-digit PIN (no email)
 - **Expense entry** — log daily expenses with date, amount, category, description, payer
-- **Dashboard** — monthly spending by category and by member, plus trend charts
-- **Budget split** — see each member's share and who owes whom at month-end
+- **Dashboard** — monthly spending by category and by member, plus a 3-month trend (amounts in ₹)
+- **Budget split** — mark expenses as shared; the dashboard shows each member's
+  equal share and your outstanding "You Owe" amount
 
 ## Tech Stack
 
 | Layer | Technology |
 |-------|-----------|
 | Framework | Next.js 16 (App Router) + React 19, TypeScript, Turbopack |
-| Styling | Tailwind CSS v4 + shadcn/ui (local system fonts) |
+| Styling | Tailwind CSS v4 + shadcn/ui (local system fonts), single "Royal Blue" brand theme |
 | Database / Auth | Supabase (Postgres), running locally via Docker |
 | Charts | Recharts |
 
@@ -131,6 +132,9 @@ Schema is defined in `supabase/migrations/` and applied automatically by
 ## Notes
 
 - Mobile-first responsive design (works as a PWA).
+- All amounts are shown in Indian Rupees (₹).
+- The UI uses a single "Royal Blue" brand theme; recolor the whole app by editing
+  the `--color-brand*` / `--color-page` tokens in `src/app/globals.css`.
 - All members share a single household group (no multi-tenancy).
 - The local Supabase services use shared default dev keys and bind to `0.0.0.0` —
   intended for local development only, never production.

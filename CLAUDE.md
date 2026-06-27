@@ -24,13 +24,16 @@ Family members or friends sharing a house who need to track and split common hou
 
 1. **Authentication** — Member login/registration (name + 4-digit PIN)
 2. **Expense Entry** — Add daily expenses with date, amount, category, description, and who paid
-3. **Dashboard** — Monthly spending summary by category and by member
-4. **Budget Split** — Calculate each member's share and show who owes whom
+3. **Dashboard** — Monthly spending summary by category and by member, plus a 3-month trend
+4. **Budget Split** — Calculate each member's equal share; the dashboard surfaces your
+   outstanding "You Owe" amount (all amounts in INR, ₹)
 
 ## Tech Stack
 
 - **Framework**: Next.js 16 (App Router, TypeScript, Turbopack), React 19
-- **Styling**: Tailwind CSS v4 + shadcn/ui; local system-font stack (no remote fonts)
+- **Styling**: Tailwind CSS v4 + shadcn/ui; local system-font stack (no remote fonts).
+  Single "Royal Blue" brand theme — brand color tokens are centralized in
+  `src/app/globals.css` (`--color-brand*`, `--color-page`)
 - **Database & Auth**: Supabase (Postgres) — runs **locally** via the Supabase CLI + Docker
 - **Charts**: Recharts
 - **Runs entirely on the local machine** — no cloud or external-network dependencies
@@ -71,6 +74,11 @@ npm run dev           # run the app at http://localhost:3000
 Useful local URLs: Studio `http://localhost:54323`, Mailpit (catches auth emails) `http://localhost:54324`.
 
 Other commands: `supabase db reset` (wipe + re-apply migrations), `supabase stop`, `colima stop`.
+
+**On a phone (same Wi-Fi):** set `NEXT_PUBLIC_SUPABASE_URL` to your Mac's LAN IP
+(e.g. `http://192.168.1.5:54321`) so the browser-side Supabase client resolves from
+the phone, then run `npm run dev:mobile` (binds to `0.0.0.0`) and open
+`http://<MAC_IP>:3000`. See README.md for the full walkthrough and caveats.
 
 ## Auth Design
 
