@@ -20,7 +20,6 @@ interface Props {
   categoryData: { name: string; value: number }[];
   memberData: { name: string; self: number; shared: number }[];
   trendData: { month: string; total: number }[];
-  settlements: { from: string; to: string; amount: number }[];
 }
 
 const MONTH_NAMES = [
@@ -32,7 +31,7 @@ const fmt = (n: number) => n.toLocaleString("en-IN", { minimumFractionDigits: 2,
 
 export default function DashboardClient({
   memberName, year, month, totalSpent, myPaid, myShare, pendingSettlement,
-  totalShared, perHead, youCovered, categoryData, memberData, trendData, settlements,
+  totalShared, perHead, youCovered, categoryData, memberData, trendData,
 }: Props) {
   const router = useRouter();
   const now = new Date();
@@ -166,32 +165,6 @@ export default function DashboardClient({
           </div>
         </div>
 
-        {/* Settlements */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-2">
-          <div className="px-4 pt-4 pb-2 flex items-center gap-2">
-            <div className="w-1 h-5 bg-brand rounded-full" />
-            <h2 className="text-base font-bold text-gray-700">Settlements — {MONTH_NAMES[month - 1]}</h2>
-          </div>
-          {settlements.length === 0 ? (
-            <div className="px-4 pb-4 flex items-center gap-2 text-emerald-600">
-              <span className="text-xl">✅</span>
-              <p className="text-base font-semibold">All settled up!</p>
-            </div>
-          ) : (
-            <ul className="px-4 pb-4 space-y-2">
-              {settlements.map((s, i) => (
-                <li key={i} className="flex items-center justify-between bg-rose-50 rounded-xl px-3 py-3">
-                  <div className="flex items-center gap-2 text-base">
-                    <span className="font-bold text-rose-600">{s.from}</span>
-                    <span className="text-gray-400">→</span>
-                    <span className="font-bold text-emerald-600">{s.to}</span>
-                  </div>
-                  <span className="font-bold text-gray-800 text-base">₹{fmt(s.amount)}</span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
       </div>
     </div>
   );
