@@ -130,12 +130,12 @@ export default function AddExpenseDrawer({ open, onOpenChange, memberId, memberN
       <form onSubmit={handleSubmit} className="flex flex-col flex-1 min-h-0">
         <div className="flex-1 overflow-y-auto px-5 py-5 space-y-4">
           <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1.5">
+            <div className="min-w-0 space-y-1.5">
               <Label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Date</Label>
               <Input type="date" value={date} onChange={(e) => setDate(e.target.value)}
-                required className="rounded-xl h-12 border-gray-200 text-base" />
+                required className="w-full min-w-0 appearance-none rounded-xl h-12 border-gray-200 text-base" />
             </div>
-            <div className="space-y-1.5">
+            <div className="min-w-0 space-y-1.5">
               <Label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Amount (₹)</Label>
               <Input type="number" inputMode="decimal" min="0.01" step="0.01" placeholder="0.00"
                 value={amount} onChange={(e) => setAmount(e.target.value)}
@@ -144,13 +144,13 @@ export default function AddExpenseDrawer({ open, onOpenChange, memberId, memberN
           </div>
 
           <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1.5">
+            <div className="min-w-0 space-y-1.5">
               <Label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Description</Label>
               <Input placeholder="e.g. Groceries" value={description}
                 onChange={(e) => setDescription(e.target.value)} required
                 className="rounded-xl h-12 border-gray-200 text-base" />
             </div>
-            <div className="space-y-1.5">
+            <div className="min-w-0 space-y-1.5">
               <Label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Category</Label>
               <Select value={category} onValueChange={(v) => setCategory(v ?? "")}>
                 <SelectTrigger className="rounded-xl h-12 border-gray-200 text-base">
