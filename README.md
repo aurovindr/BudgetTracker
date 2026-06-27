@@ -71,13 +71,24 @@ Wi-Fi network:
    NEXT_PUBLIC_SUPABASE_URL=http://<YOUR_MAC_IP>:54321
    ```
 
-3. Start the server bound to the network: `npm run dev:mobile`.
-4. On the phone, open `http://<YOUR_MAC_IP>:3000`. Optionally use
+3. Allow that origin in `next.config.ts` so Next.js serves its `/_next/*` dev
+   assets to the phone. Without this the page loads but the JavaScript never
+   hydrates, so forms silently reload and clear instead of submitting:
+
+   ```ts
+   const nextConfig: NextConfig = {
+     allowedDevOrigins: ["<YOUR_MAC_IP>"],
+   };
+   ```
+
+4. Start the server bound to the network: `npm run dev:mobile`.
+5. On the phone, open `http://<YOUR_MAC_IP>:3000`. Optionally use
    Share → Add to Home Screen for a fullscreen app-like experience.
 
 Notes: the macOS firewall may block incoming connections (allow `node` if so),
-and your Mac's LAN IP can change when it rejoins Wi-Fi — update `.env.local` if
-the phone suddenly can't sign in.
+and your Mac's LAN IP can change when it rejoins Wi-Fi — update **both**
+`.env.local` and `allowedDevOrigins` in `next.config.ts` if the phone suddenly
+can't sign in or the forms stop responding.
 
 ## Local URLs
 

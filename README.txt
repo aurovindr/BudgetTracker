@@ -44,8 +44,10 @@ Run:
   npm run dev       # app at http://localhost:3000
 
 To open on a phone (same Wi-Fi): point NEXT_PUBLIC_SUPABASE_URL in .env.local at
-your Mac's LAN IP (e.g. http://192.168.1.5:54321), run "npm run dev:mobile", then
-open http://<MAC_IP>:3000 on the phone.
+your Mac's LAN IP (e.g. http://192.168.1.5:54321), add that IP to
+allowedDevOrigins in next.config.ts (otherwise the page loads but forms won't
+submit on the phone), run "npm run dev:mobile", then open http://<MAC_IP>:3000
+on the phone. If the LAN IP changes, update both files.
 
 See README.md for full details, local URLs, and common commands.
 

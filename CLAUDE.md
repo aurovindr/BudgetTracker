@@ -77,8 +77,11 @@ Other commands: `supabase db reset` (wipe + re-apply migrations), `supabase stop
 
 **On a phone (same Wi-Fi):** set `NEXT_PUBLIC_SUPABASE_URL` to your Mac's LAN IP
 (e.g. `http://192.168.1.5:54321`) so the browser-side Supabase client resolves from
-the phone, then run `npm run dev:mobile` (binds to `0.0.0.0`) and open
-`http://<MAC_IP>:3000`. See README.md for the full walkthrough and caveats.
+the phone, **and** add that IP to `allowedDevOrigins` in `next.config.ts` (Next 16
+otherwise blocks cross-origin `/_next/*` dev requests, so the page loads but never
+hydrates and forms just clear). Then run `npm run dev:mobile` (binds to `0.0.0.0`)
+and open `http://<MAC_IP>:3000`. Update both files if the LAN IP changes. See
+README.md for the full walkthrough and caveats.
 
 ## Auth Design
 
