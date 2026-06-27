@@ -29,10 +29,11 @@ Family members or friends sharing a house who need to track and split common hou
 
 ## Tech Stack
 
-- **Framework**: Next.js 14 (App Router, TypeScript)
-- **Styling**: Tailwind CSS + shadcn/ui
-- **Database & Auth**: Supabase (Postgres)
-- **Deployment**: Vercel
+- **Framework**: Next.js 16 (App Router, TypeScript, Turbopack), React 19
+- **Styling**: Tailwind CSS v4 + shadcn/ui; local system-font stack (no remote fonts)
+- **Database & Auth**: Supabase (Postgres) — runs **locally** via the Supabase CLI + Docker
+- **Charts**: Recharts
+- **Runs entirely on the local machine** — no cloud or external-network dependencies
 
 ## Project Structure
 
@@ -40,11 +41,36 @@ Family members or friends sharing a house who need to track and split common hou
 BudgetTracker/
 ├── src/
 │   ├── app/              # Next.js App Router pages
-│   ├── components/       # Reusable UI components
-│   └── lib/              # Supabase client, utilities
-├── supabase/             # DB migrations and schema
+│   │   ├── (auth)/       # login + register
+│   │   ├── dashboard/    # monthly summary (server + client)
+│   │   ├── expenses/     # expense list
+│   │   ├── profile/      # member profile
+│   │   └── middleware.ts # auth-guard redirects (lives in src/)
+│   ├── components/       # ui/, layout/, dashboard/, expenses/
+│   └── lib/              # supabase client/server, dashboard queries, utils
+├── supabase/
+│   ├── config.toml       # local stack config (analytics disabled for Colima)
+│   └── migrations/       # 001_init, 002_expenses, 003_grants
 └── public/
 ```
+
+## Running Locally
+
+The whole stack runs on this machine — no hosted Supabase, no internet calls.
+
+Prerequisites (one-time): Colima (Docker runtime) and the Supabase CLI.
+
+```bash
+brew install colima docker supabase/tap/supabase   # one-time
+colima start          # start the Docker runtime (after each reboot)
+supabase start        # start local Postgres + Auth (API at 127.0.0.1:54321)
+npm run dev           # run the app at http://localhost:3000
+```
+
+`.env.local` points `NEXT_PUBLIC_SUPABASE_URL` at the local API (`http://127.0.0.1:54321`).
+Useful local URLs: Studio `http://localhost:54323`, Mailpit (catches auth emails) `http://localhost:54324`.
+
+Other commands: `supabase db reset` (wipe + re-apply migrations), `supabase stop`, `colima stop`.
 
 ## Auth Design
 
@@ -58,3 +84,9 @@ BudgetTracker/
 - Personal/home-use app — small number of users, no enterprise scale needed
 - Mobile-first responsive design (works as PWA)
 - All members share a single household group (no multi-tenancy)
+- Runs fully offline on a local machine; the Supabase stack is containerized via Colima
+- DB privileges: migrations grant the `authenticated` role table access explicitly
+  (`003_grants.sql`) since the local stack does not apply Supabase's default grants.
+  RLS policies in `001`/`002` still govern row-level access.
+- Local Supabase services bind to `0.0.0.0` with shared default dev keys — fine for
+  local use, never for production.

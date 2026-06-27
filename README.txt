@@ -18,12 +18,33 @@ and split common household expenses.
 
 HOW TO USE
 ----------
-1. Register an account or log in
+1. Register an account or log in (email + 4-digit PIN)
 2. Add expenses as you spend throughout the month
 3. View the monthly dashboard to see category-wise spending
 4. Use the budget split view at month-end to settle up
 
+TECH STACK
+----------
+- Next.js 16 (App Router) + React 19, TypeScript
+- Tailwind CSS v4 + shadcn/ui
+- Supabase (Postgres) running locally via Docker
+- Recharts for dashboard charts
+
+Runs entirely on the local machine - no cloud or external-network dependencies.
+
+LOCAL SETUP
+-----------
+One-time install (macOS):
+  brew install colima docker supabase/tap/supabase
+
+Run:
+  colima start      # start the Docker runtime (once per reboot)
+  supabase start    # start local Postgres + Auth
+  npm install       # first time only
+  npm run dev       # app at http://localhost:3000
+
+See README.md for full details, local URLs, and common commands.
+
 STATUS
 ------
-Project is in early development. Tech stack and setup instructions will be
-added here once decided.
+Functional. Runs locally against a containerized Supabase stack.
