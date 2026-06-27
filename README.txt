@@ -18,7 +18,7 @@ and split common household expenses.
 
 HOW TO USE
 ----------
-1. Register an account or log in (email + 4-digit PIN)
+1. Register an account or log in (name + 4-digit PIN)
 2. Add expenses as you spend throughout the month
 3. View the monthly dashboard to see category-wise spending
 4. Use the budget split view at month-end to settle up

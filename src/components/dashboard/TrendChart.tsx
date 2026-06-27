@@ -17,9 +17,9 @@ export default function TrendChart({ data }: Props) {
         <Line
           type="monotone"
           dataKey="total"
-          stroke="#3b82f6"
+          stroke="#185fa5"
           strokeWidth={2}
-          dot={{ r: 4, fill: "#3b82f6" }}
+          dot={{ r: 4, fill: "#185fa5" }}
           activeDot={{ r: 6 }}
         />
       </LineChart>

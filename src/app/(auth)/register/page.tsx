@@ -4,13 +4,13 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
+import { nameToEmail } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export default function RegisterPage() {
   const router = useRouter();
   const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
   const [pin, setPin] = useState("");
   const [confirmPin, setConfirmPin] = useState("");
   const [error, setError] = useState("");
@@ -19,13 +19,14 @@ export default function RegisterPage() {
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
     setError("");
+    if (!fullName.trim()) { setError("Please enter your name."); return; }
     if (pin.length !== 4) { setError("PIN must be exactly 4 digits."); return; }
     if (pin !== confirmPin) { setError("PINs do not match."); return; }
     setLoading(true);
     const supabase = createClient();
     const password = pin + pin.split("").reverse().join("") + pin.slice(0, 2);
     const { error } = await supabase.auth.signUp({
-      email, password,
+      email: nameToEmail(fullName), password,
       options: { data: { full_name: fullName } },
     });
     if (error) { setError(error.message); setLoading(false); return; }
@@ -33,7 +34,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-600 px-4 py-8">
+    <main className="min-h-screen flex flex-col items-center justify-center bg-brand px-4 py-8">
       {/* Logo */}
       <div className="mb-6 text-center">
         <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-3 backdrop-blur">
@@ -53,16 +54,7 @@ export default function RegisterPage() {
               id="fullName" type="text" placeholder="Jane Smith"
               value={fullName} onChange={(e) => setFullName(e.target.value)}
               required autoComplete="name"
-              className="rounded-xl border-gray-200 focus:border-emerald-400 h-11"
-            />
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="email" className="text-gray-600 font-medium text-sm">Email</Label>
-            <Input
-              id="email" type="email" placeholder="you@example.com"
-              value={email} onChange={(e) => setEmail(e.target.value)}
-              required autoComplete="email"
-              className="rounded-xl border-gray-200 focus:border-emerald-400 h-11"
+              className="rounded-xl border-gray-200 focus:border-brand focus:ring-brand h-11"
             />
           </div>
           <div className="space-y-1.5">
@@ -71,7 +63,7 @@ export default function RegisterPage() {
               id="pin" type="password" inputMode="numeric" maxLength={4} placeholder="••••"
               value={pin} onChange={(e) => setPin(e.target.value.replace(/\D/g, ""))}
               required
-              className="rounded-xl border-gray-200 focus:border-emerald-400 h-11 text-center text-xl tracking-[0.5em]"
+              className="rounded-xl border-gray-200 focus:border-brand focus:ring-brand h-11 text-center text-xl tracking-[0.5em]"
             />
           </div>
           <div className="space-y-1.5">
@@ -80,7 +72,7 @@ export default function RegisterPage() {
               id="confirmPin" type="password" inputMode="numeric" maxLength={4} placeholder="••••"
               value={confirmPin} onChange={(e) => setConfirmPin(e.target.value.replace(/\D/g, ""))}
               required
-              className="rounded-xl border-gray-200 focus:border-emerald-400 h-11 text-center text-xl tracking-[0.5em]"
+              className="rounded-xl border-gray-200 focus:border-brand focus:ring-brand h-11 text-center text-xl tracking-[0.5em]"
             />
           </div>
           {error && (
@@ -88,14 +80,14 @@ export default function RegisterPage() {
           )}
           <button
             type="submit" disabled={loading}
-            className="w-full h-12 rounded-xl font-semibold text-white bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 transition-all shadow-lg shadow-emerald-200 disabled:opacity-60 mt-2"
+            className="w-full h-12 rounded-xl font-semibold text-white bg-brand hover:bg-brand-dark transition-all shadow-lg shadow-brand-light disabled:opacity-60 mt-2"
           >
             {loading ? "Creating account…" : "Create Account"}
           </button>
         </form>
         <p className="text-center text-sm text-gray-500 mt-5">
           Already have an account?{" "}
-          <Link href="/login" className="text-emerald-600 font-semibold hover:underline">
+          <Link href="/login" className="text-brand font-semibold hover:underline">
             Sign in
           </Link>
         </p>

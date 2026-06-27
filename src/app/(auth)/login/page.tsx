@@ -4,13 +4,13 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
-import { Button } from "@/components/ui/button";
+import { nameToEmail } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [pin, setPin] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -22,9 +22,9 @@ export default function LoginPage() {
     setError("");
     const supabase = createClient();
     const password = pin + pin.split("").reverse().join("") + pin.slice(0, 2);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({ email: nameToEmail(name), password });
     if (error) {
-      setError("Invalid email or PIN. Please try again.");
+      setError("Invalid name or PIN. Please try again.");
       setLoading(false);
       return;
     }
@@ -32,7 +32,7 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-violet-600 via-indigo-600 to-blue-500 px-4">
+    <main className="min-h-screen flex flex-col items-center justify-center bg-brand px-4">
       {/* Logo area */}
       <div className="mb-8 text-center">
         <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-3 backdrop-blur">
@@ -47,12 +47,12 @@ export default function LoginPage() {
         <h2 className="text-xl font-bold text-gray-800 mb-5">Welcome back</h2>
         <form onSubmit={handleLogin} className="space-y-4">
           <div className="space-y-1.5">
-            <Label htmlFor="email" className="text-gray-600 font-medium text-sm">Email</Label>
+            <Label htmlFor="name" className="text-gray-600 font-medium text-sm">Name</Label>
             <Input
-              id="email" type="email" placeholder="you@example.com"
-              value={email} onChange={(e) => setEmail(e.target.value)}
-              required autoComplete="email"
-              className="rounded-xl border-gray-200 focus:border-violet-400 focus:ring-violet-400 h-11"
+              id="name" type="text" placeholder="Jane Smith"
+              value={name} onChange={(e) => setName(e.target.value)}
+              required autoComplete="name"
+              className="rounded-xl border-gray-200 focus:border-brand focus:ring-brand h-11"
             />
           </div>
           <div className="space-y-1.5">
@@ -61,7 +61,7 @@ export default function LoginPage() {
               id="pin" type="password" inputMode="numeric" maxLength={4} placeholder="••••"
               value={pin} onChange={(e) => setPin(e.target.value.replace(/\D/g, ""))}
               required
-              className="rounded-xl border-gray-200 focus:border-violet-400 focus:ring-violet-400 h-11 text-center text-xl tracking-[0.5em]"
+              className="rounded-xl border-gray-200 focus:border-brand focus:ring-brand h-11 text-center text-xl tracking-[0.5em]"
             />
           </div>
           {error && (
@@ -70,14 +70,14 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full h-12 rounded-xl font-semibold text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 transition-all shadow-lg shadow-violet-200 disabled:opacity-60 mt-2"
+            className="w-full h-12 rounded-xl font-semibold text-white bg-brand hover:bg-brand-dark transition-all shadow-lg shadow-brand-light disabled:opacity-60 mt-2"
           >
             {loading ? "Signing in…" : "Sign In"}
           </button>
         </form>
         <p className="text-center text-sm text-gray-500 mt-5">
           No account?{" "}
-          <Link href="/register" className="text-violet-600 font-semibold hover:underline">
+          <Link href="/register" className="text-brand font-semibold hover:underline">
             Register here
           </Link>
         </p>

@@ -46,6 +46,13 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Royal Blue brand theme — single accent used app-wide */
+  --color-brand: #185fa5;
+  --color-brand-dark: #0c447c;
+  --color-brand-light: #bdd6f2;
+  --color-brand-tint: #e6f1fb;
+  --color-page: #eef3fb;
 }
 
 :root {

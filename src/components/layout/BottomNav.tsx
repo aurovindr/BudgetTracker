@@ -15,7 +15,7 @@ export default function BottomNav({ onAddClick }: BottomNavProps) {
   const linkClass = (href: string) =>
     cn(
       "flex flex-col items-center gap-0.5 text-xs px-4 py-2 transition-colors",
-      pathname === href ? "text-violet-600" : "text-gray-400"
+      pathname === href ? "text-brand" : "text-gray-400"
     );
 
   return (
@@ -33,7 +33,7 @@ export default function BottomNav({ onAddClick }: BottomNavProps) {
       {/* Add button — elevated pill */}
       <button
         onClick={onAddClick}
-        className="flex flex-col items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-600 text-white shadow-lg shadow-violet-300 -mt-5"
+        className="flex flex-col items-center justify-center w-14 h-14 rounded-full bg-brand text-white shadow-lg shadow-brand-light -mt-5"
       >
         <PlusCircle size={26} strokeWidth={2} />
       </button>

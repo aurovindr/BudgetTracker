@@ -6,7 +6,7 @@ no cloud services or external-network dependencies.
 
 ## Features
 
-- **Authentication** — member registration & login with email + 4-digit PIN
+- **Authentication** — member registration & login with name + 4-digit PIN
 - **Expense entry** — log daily expenses with date, amount, category, description, payer
 - **Dashboard** — monthly spending by category and by member, plus trend charts
 - **Budget split** — see each member's share and who owes whom at month-end
@@ -51,7 +51,7 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000). On first use, register a member,
-then log in with your email + 4-digit PIN.
+then log in with your name + 4-digit PIN.
 
 `.env.local` is preconfigured to point at the local Supabase API
 (`http://127.0.0.1:54321`).

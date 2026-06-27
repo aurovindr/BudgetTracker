@@ -22,7 +22,7 @@ Family members or friends sharing a house who need to track and split common hou
 
 ## Core Features
 
-1. **Authentication** — Member login/registration (email + 4-digit PIN)
+1. **Authentication** — Member login/registration (name + 4-digit PIN)
 2. **Expense Entry** — Add daily expenses with date, amount, category, description, and who paid
 3. **Dashboard** — Monthly spending summary by category and by member
 4. **Budget Split** — Calculate each member's share and show who owes whom
@@ -74,8 +74,10 @@ Other commands: `supabase db reset` (wipe + re-apply migrations), `supabase stop
 
 ## Auth Design
 
-- Registration: full name, email, 4-digit PIN
-- Login: email + 4-digit PIN
+- Registration: full name, 4-digit PIN
+- Login: name + 4-digit PIN
+- No email is collected; Supabase Auth requires one internally, so a stable
+  address is derived from the member's name (`nameToEmail` in `src/lib/utils.ts`)
 - Sessions persisted on device
 - Single shared household group — all members belong to one group
 

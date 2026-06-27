@@ -77,7 +77,7 @@ export default function AddExpenseDrawer({ open, onOpenChange, memberId, memberN
     setTimeout(() => { reset(); onOpenChange(false); }, 1500);
   }
 
-  const accentColor = category ? (CATEGORY_COLORS[category as Category] ?? "#6d28d9") : "#6d28d9";
+  const accentColor = category ? (CATEGORY_COLORS[category as Category] ?? "#185fa5") : "#185fa5";
   const parsedAmount = parseFloat(amount || "0");
 
   if (!open) return null;
@@ -182,7 +182,7 @@ export default function AddExpenseDrawer({ open, onOpenChange, memberId, memberN
                 <p className="text-sm text-gray-400">Divide among all members</p>
               </div>
               <Checkbox checked={isSplit} onCheckedChange={(v) => setIsSplit(!!v)}
-                className="w-5 h-5 data-[state=checked]:bg-violet-600 data-[state=checked]:border-violet-600" />
+                className="w-5 h-5 data-[state=checked]:bg-brand data-[state=checked]:border-brand" />
             </label>
             <label className="flex items-center justify-between px-4 py-3.5 cursor-pointer">
               <div>
